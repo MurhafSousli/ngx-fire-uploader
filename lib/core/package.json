@@ -1,0 +1,35 @@
+{
+  "name": "@ngx-fire-uploader/core",
+  "description": "Angular file uploader for Firebase",
+  "version": "VERSION",
+  "homepage": "http://github.com/murhafsousli/ngx-fire-uploader",
+  "author": {
+    "name": "Murhaf Sousli",
+    "url": "http://github.com/murhafsousli"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/murhafsousli/ngx-fire-uploader.git"
+  },
+  "bugs": {
+    "url": "http://github.com/murhafsousli/ngx-fire-uploader/issues"
+  },
+  "license": "MIT",
+  "keywords": [
+    "angular",
+    "firebase",
+    "file",
+    "images",
+    "upload",
+    "uploader",
+    "dropzone",
+    "dropfile",
+    "drop"
+  ],
+  "private": false,
+  "peerDependencies": {
+    "@angular/common": ">=5.0.0",
+    "firebase": ">=4.0.0",
+    "angularfire2": ">=5.0.0"
+  }
+}

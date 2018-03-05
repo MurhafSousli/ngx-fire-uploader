@@ -1,0 +1,31 @@
+<div class="file-item"
+     [class.file-active]="state.isActive"
+     [class.file-success]="state.success"
+     [class.file-error]="state.error">
+
+  <img *ngIf="state.preview" [src]="state.preview | safeUrl" class="file-thumb">
+
+  <div class="file-overlay">
+    <div class="file-success-icon"></div>
+    <div class="file-error-icon"></div>
+  </div>
+
+  <div *ngIf="showProgress" class="file-progress-bar">
+    <div class="file-bar" [style.transform]="'translate3d(' + (-100 + state.progress) + '%,0,0)'"></div>
+  </div>
+</div>
+
+<div *ngIf="showDetails" class="file-details">
+  <div class="file-detail file-name">
+    <span>{{ state.name }}</span>
+  </div>
+  <div class="file-detail file-size">
+    <span>{{ state.totalBytes | nFormatter }}</span>
+  </div>
+</div>
+
+<div *ngIf="showRemove" class="file-remove">
+  <div class="file-remove-button" (click)="removeClicked($event)">
+    <div class="file-remove-icon"></div>
+  </div>
+</div>

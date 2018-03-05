@@ -1,5 +1,25 @@
 <h1>Example</h1>
 
-<div>
-  <ng-uploader></ng-uploader>
-</div>
+<file-uploader #uploader
+               accept="image/*"
+               [multiple]="true"
+               [resizeWidth]="500"
+               (files)="onFiles($event)"
+               (totalProgress)="onProgress($event)"
+               (complete)="onComplete($event)">
+  <file-preview [uploader]="uploader"
+                [showDetails]="true"
+                [showProgress]="true"></file-preview>
+</file-uploader>
+
+
+<button (click)="uploader.start()">Start</button>
+
+<pre>
+  Files Count: {{ files?.length }}
+  Transfer Progress: {{ totalProgress?.bytesTransferred | nFormatter }} / {{ totalProgress?.totalBytes | nFormatter }}
+  Transfer Percentage: {{ totalProgress?.progress }}%
+
+
+  <a *ngFor="let link of links" href="{{link}}"> {{link}} </a>
+</pre>

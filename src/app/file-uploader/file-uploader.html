@@ -1,0 +1,11 @@
+<ng-container *ngIf="state$ | async; let state">
+  <input #inputFile type="file" [accept]="accept" [multiple]="multiple" (change)="addFiles(inputFile.files)">
+  <div class="dropzone" (dropZone)="addFiles($event)" (click)="inputFile.click()">
+    <div class="dropzone-placeholder" *ngIf="!state.files.length || !content.children.length">
+      {{ placeholder }}
+    </div>
+    <div #content>
+      <ng-content></ng-content>
+    </div>
+  </div>
+</ng-container>
