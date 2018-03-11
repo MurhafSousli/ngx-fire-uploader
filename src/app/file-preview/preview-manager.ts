@@ -10,7 +10,7 @@ const defaultConfig: UploadConfig = {
 };
 
 @Injectable()
-export class PreviewerManager {
+export class PreviewManager {
 
   /** Global config */
   config: UploadConfig;

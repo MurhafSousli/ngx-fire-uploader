@@ -1,7 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
 @import url('https://fonts.googleapis.com/css?family=Roboto+Mono');
+@import url('https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css');
 @import 'app/file-uploader/file-uploader';
+@import 'app/file-preview/file-previewer';
 
 body {
-  font-family: 'Roboto Mono', monospace;
+  //font-family: 'Roboto Mono', monospace;
 }

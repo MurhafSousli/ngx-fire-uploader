@@ -1,27 +1,56 @@
-# NgxUploadFile
+# Angular Fire Uploader
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.7.1.
 
-## Development server
+### Inputs
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+The following inputs can be set from the `FireUpload.forRoot(config?)`
 
-## Code scaffolding
+| Name                  | Description                                           |
+| --------------------- | ----------------------------------------------------- |
+| paramName             |                                                       |
+| uniqueName            |                                                       |
+| placeholder           |                                                       |
+| multiple              |                                                       |
+| accept                |                                                       |
+| maxUploadsPerTime     |                                                       | 
+| maxFiles              |                                                       | 
+| maxFileSize           |                                                       | 
+| autoStart             |                                                       | 
+| createImageThumbnails |                                                       | 
+| thumbnailMethod       |                                                       | 
+| resizeMethod          |                                                       | 
+| resizeWidth           |                                                       | 
+| resizeHeight          |                                                       | 
+| thumbWidth            |                                                       | 
+| thumbHeight           |                                                       | 
+| resizeMimeType        |                                                       | 
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
-## Build
+### Outputs
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
+| Name           | Description                                           |
+| -------------- | ----------------------------------------------------- |
+| state$         |                                                       |
+| files          |                                                       |
+| totalProgress  |                                                       |
+| success        |                                                       |
+| complete       |                                                       |
+| reset          |                                                       | 
+| error          |                                                       | 
 
-## Running unit tests
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+### Functions
 
-## Running end-to-end tests
+| Name                      | Description                                           |
+| ------------------------- | ----------------------------------------------------- |
+| Uploader.**start()**      | Start uploading files                                 |
+| Uploader.**addFiles()**   | Add files to the queue                                |
+| Uploader.**removeFile()** | Remove file from the queue                            |
+| Uploader.**pause()**      | Pause all files that are being uploaded               |
+| Uploader.**resume()**     | Resume all files that are being paused                |
+| Uploader.**clear()**      |                                                       | 
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
 
-## Further help
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+
+

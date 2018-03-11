@@ -1,14 +1,21 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, HostBinding, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { AngularFireStorage } from 'angularfire2/storage';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { AngularFireStorage, AngularFireUploadTask } from 'angularfire2/storage';
-import { FireUploaderState, TotalProgress } from './fire-uploader.model';
-import { FileItem } from './file-item.class';
+
+import { UploaderState, UploaderProgress } from './fire-uploader.model';
 import { FireUploaderManager } from './file-uploader.manager';
+import { FileItem } from './file-item.class';
+import { convertToMB, maxFilesError, maxFileSizeError, parallizeUploads, processFile } from './utils';
+
+import { from } from 'rxjs/observable/from';
+import { forkJoin } from 'rxjs/observable/forkJoin';
+import { debounceTime } from 'rxjs/operators/debounceTime';
+import { combineAll } from 'rxjs/operators/combineAll';
+import { concatMap } from 'rxjs/operators/concatMap';
+import { switchMap } from 'rxjs/operators/switchMap';
+import { finalize } from 'rxjs/operators/finalize';
 import { map } from 'rxjs/operators/map';
 import { tap } from 'rxjs/operators/tap';
-import { debounceTime } from 'rxjs/operators/debounceTime';
-import { Subject } from 'rxjs/Subject';
-import { resizeImage } from './utils';
 
 @Component({
   selector: 'file-uploader',
@@ -17,20 +24,22 @@ import { resizeImage } from './utils';
 })
 export class FileUploaderComponent implements OnInit, OnDestroy {
 
-  private _initialState: FireUploaderState = {
+  private _initialState: UploaderState = {
     files: [],
-    totalProgress: {
+    active: false,
+    progress: {
       totalBytes: 0,
       bytesTransferred: 0,
-      progress: 0
+      percentage: 0
     }
   };
-  private _state: FireUploaderState = this._initialState;
-  state$ = new BehaviorSubject<FireUploaderState>(this._initialState);
+  private _state: UploaderState = this._initialState;
+  state$ = new BehaviorSubject<UploaderState>(this._initialState);
 
-  calculateTotalProgress$ = new BehaviorSubject<TotalProgress>(this._initialState.totalProgress);
+  updateRootState$ = new BehaviorSubject<UploaderState>({});
 
-  complete$ = new Subject<string>();
+  // If null, original file name will be used.
+  @Input() dropZone: boolean = this.manager.config.dropZone;
 
   // If null, original file name will be used.
   @Input() paramName: string = this.manager.config.paramName;
@@ -48,7 +57,7 @@ export class FileUploaderComponent implements OnInit, OnDestroy {
   @Input() accept: string = this.manager.config.accept;
 
   // Maximum number of files uploading at a time
-  @Input() maxUploadsPerTime: number = this.manager.config.maxUploadsPerTime;
+  @Input() parallelUploads: number = this.manager.config.parallelUploads;
 
   // Maximum number of files to be uploaded
   @Input() maxFiles: number = this.manager.config.maxFiles;
@@ -60,7 +69,7 @@ export class FileUploaderComponent implements OnInit, OnDestroy {
   @Input() autoStart: boolean = this.manager.config.autoStart;
 
   // Whether thumbnails for images should be generated
-  @Input() createImageThumbnails: boolean = this.manager.config.createImageThumbnails;
+  @Input() generateThumbnails: boolean = this.manager.config.createImageThumbnails;
 
   // How the images should be scaled down in case both, width and height are provided. Can be either contain or crop.
   @Input() thumbnailMethod: 'crop' | 'contain' = this.manager.config.thumbMethod;
@@ -82,84 +91,90 @@ export class FileUploaderComponent implements OnInit, OnDestroy {
   // Emits when files are changed.
   @Output() files = new EventEmitter();
 
-  // Emits when a file gets processed.
-  @Output() processing = new EventEmitter();
+  // Emits when a file is canceled.
+  @Output() cancel = new EventEmitter<FileItem>();
 
-  // Emits when a file upload gets canceled.
-  @Output() cancel = new EventEmitter<string[]>();
+  // Emits when a file is deleted.
+  @Output() remove = new EventEmitter<FileItem>();
 
   // The file has been uploaded successfully.
-  @Output() success = new EventEmitter<string>();
+  @Output() success = new EventEmitter<FileItem>();
 
   // Emits when the upload was either successful or erroneous.
-  @Output() complete = new EventEmitter<string[]>();
+  @Output() complete = new EventEmitter<FileItem[]>();
+
+  // Emits downloadURL array for the successfully uploaded files
+  @Output() value = new EventEmitter<string[]>();
 
   // Emits when an error is occurred
   @Output() error = new EventEmitter();
 
+  // Emits when active state changes
+  @Output() active = new EventEmitter<boolean>();
+
   // Emits the progress %, the totalBytes and the totalBytesSent.
-  @Output() totalProgress = new EventEmitter<TotalProgress>();
+  @Output() progress = new EventEmitter<UploaderProgress>();
 
   // Emits when the uploader is reset
   @Output() reset = new EventEmitter();
 
-  constructor(private manager: FireUploaderManager, private storage: AngularFireStorage) {
+  @ViewChild('fileInput') fileInput;
 
+  @HostBinding('class.dragover') hoverClass;
+
+  constructor(private manager: FireUploaderManager, private storage: AngularFireStorage) {
+    this.state$.subscribe(res => console.log('root', res));
   }
 
   ngOnInit() {
-    // Calculate total progress
-    if (this.totalProgress.observers.length) {
+    if (this.progress.observers.length) {
 
-      this.calculateTotalProgress$.pipe(
+      // Combine all items state
+      this.updateRootState$.pipe(
         debounceTime(50),
         map(() => {
           if (this._state.files.length) {
-            const totalProgress = this._state.files
+            const rootState = this._state.files
               .map(item => item.state)
               .reduce((total, state) => ({
-                  progress: total.progress + state.progress,
-                  bytesTransferred: total.bytesTransferred + state.bytesTransferred,
-                  totalBytes: total.totalBytes + state.totalBytes
+                  active: total.active || state.active,
+                  progress: {
+                    percentage: total.progress.percentage + state.progress.percentage,
+                    bytesTransferred: total.progress.bytesTransferred + state.progress.bytesTransferred,
+                    totalBytes: total.progress.totalBytes + state.progress.totalBytes
+                  }
                 })
               );
             return {
-              progress: totalProgress.progress / this._state.files.length,
-              bytesTransferred: totalProgress.bytesTransferred,
-              totalBytes: totalProgress.totalBytes
+              active: rootState.active,
+              progress: {
+                percentage: rootState.progress.percentage / this._state.files.length,
+                bytesTransferred: rootState.progress.bytesTransferred,
+                totalBytes: rootState.progress.totalBytes
+              }
             };
           }
           return {
-            progress: 0,
-            bytesTransferred: 0,
-            totalBytes: 0
+            active: false,
+            progress: {
+              percentage: 0,
+              bytesTransferred: 0,
+              totalBytes: 0
+            }
           };
         }),
-        tap((totalProgress: TotalProgress) => {
-          this.setState({totalProgress});
-          this.totalProgress.emit(totalProgress);
+        tap((state: UploaderState) => {
+          this.setState(state);
+          this.progress.emit(state.progress);
+          this.active.emit(state.active);
         })
       ).subscribe();
-    }
-
-    // Emits on complete
-    if (this.complete$.observers.length) {
-      this.complete$.pipe(
-        map(() => {
-          if (this._state.files.length) {
-            const downloadURLs = this._state.files
-              .filter(item => item.state.success)
-              .map(item => item.state.downloadURL);
-            this.complete.emit(downloadURLs);
-          }
-        })
-      );
     }
   }
 
   ngOnDestroy() {
-    if (this.totalProgress.observers.length) {
-      this.calculateTotalProgress$.complete();
+    if (this.progress.observers.length) {
+      this.updateRootState$.complete();
     }
   }
 
@@ -167,62 +182,67 @@ export class FileUploaderComponent implements OnInit, OnDestroy {
    * Start uploading
    */
   start() {
-    this._state.files
-      .filter((item: FileItem) => !item.state.success)
-      .map((item: FileItem) => {
-        const path = `${new Date().getTime()}_${item.state.name}`;
-        let task: AngularFireUploadTask;
-        if (this.resizeWidth || this.resizeHeight) {
-          resizeImage(item.file, this.resizeWidth, this.resizeHeight, this.resizeMethod)
-            .then(data => {
-              task = this.storage.upload(path, data);
-              item.assignTask(task);
-            });
-        } else {
-          task = this.storage.upload(path, item.file);
-          item.assignTask(task);
-        }
-      });
+    from(this._state.files).pipe(
+      map((file: FileItem) =>
+        processFile(file, this.resizeWidth, this.resizeHeight, this.resizeMethod)
+      ),
+      combineAll(),
+      switchMap((files: FileItem[]) =>
+        parallizeUploads(files, this.parallelUploads)
+      ),
+      concatMap((chunk: FileItem[]) =>
+        this.uploadFiles(chunk)
+      ),
+      finalize(() => {
+        this.complete.emit(this._state.files);
+        const downloadURLs = this._state.files.map(file => file.state.downloadURL);
+        this.value.emit(downloadURLs);
+        this.updateRootState$.next(null);
+      })
+    ).subscribe();
+  }
+
+  select() {
+    this.fileInput.nativeElement.click();
   }
 
   /**
    * Add files to the queue
    */
   addFiles(fileList: FileList) {
-    if (fileList.length) {
-      let files: FileItem[] = [];
-      for (let i = 0; i < fileList.length; i++) {
-        const file = new FileItem(fileList[i], this);
-        files = [...files, file];
-      }
-      if (this.multiple) {
-        // Combine and filter duplicated files
-        files = [...this._state.files, ...files]
-          .filter((curr, index, self) =>
-            self.findIndex(t => t.file.name === curr.file.name && t.file.size === curr.file.size) === index
-          );
-      }
-      this.setState({files});
-      this.files.emit(this._state.files);
-      this.calculateTotalProgress$.next(null);
+    const files = this.validateFiles(fileList);
+    this.setState({files});
+    this.files.emit(files);
+    this.updateRootState$.next(null);
 
-      // Starts uploading as soon as the file are added
-      if (this.autoStart) {
-        this.start();
-      }
+    // Starts uploading as soon as the file are added
+    if (this.autoStart) {
+      this.start();
     }
   }
 
   /**
-   * Remove file from the queue
+   * Remove file
+   * cancels the file if it is being uploaded
+   * deletes the file if it has been uploaded
    */
-  remove(file: FileItem) {
-    file.cancel();
+  removeFile(file: FileItem) {
+    if (file.state.success) {
+      file.delete()
+        .then(() => this.remove.emit(file))
+        .catch(error => this.error.emit(error));
+    } else {
+      file.cancel();
+      this.cancel.emit(file);
+    }
+
+    // Destroy file item
     file.state$.complete();
     const files = this._state.files.filter(item => item !== file);
     this.setState({files});
+
     this.files.emit(this._state.files);
-    this.calculateTotalProgress$.next(null);
+    this.updateRootState$.next(null);
   }
 
   /**
@@ -230,12 +250,15 @@ export class FileUploaderComponent implements OnInit, OnDestroy {
    */
   clear() {
     this._state.files.map((file: FileItem) => {
-      file.cancel();
-      file.state$.complete();
+      if (file.state.success) {
+        file.delete().then().catch();
+      } else {
+        file.cancel();
+      }
     });
     this.setState({files: []});
-    this.files.emit(this._state.files);
-    this.calculateTotalProgress$.next(null);
+    this.files.emit([]);
+    this.updateRootState$.next(null);
     this.reset.emit();
   }
 
@@ -247,9 +270,66 @@ export class FileUploaderComponent implements OnInit, OnDestroy {
     this._state.files.map((file: FileItem) => file.resume());
   }
 
-  private setState(state: FireUploaderState) {
+  private setState(state: UploaderState) {
     this._state = {...this._state, ...state};
     this.state$.next(this._state);
+  }
+
+  /**
+   * Takes files from drop zone or file input
+   * Validates max file count
+   * Validates max file size
+   * Prevents duplication
+   */
+  private validateFiles(fileList: FileList) {
+    let files: FileItem[] = [];
+    if (fileList.length) {
+      let length: number;
+
+      // Validate max files count
+      if (fileList.length > this.maxFiles) {
+        this.error.emit(maxFilesError(this.maxFiles));
+        length = this.maxFiles;
+      } else {
+        length = fileList.length;
+      }
+
+      for (let i = 0; i < length; i++) {
+
+        // Validate max file size
+        if (convertToMB(fileList[i].size) > this.maxFileSize) {
+          this.error.emit(maxFileSizeError(fileList[i].name));
+        } else {
+          const file = new FileItem(fileList[i], this);
+          files = [...files, file];
+        }
+      }
+      if (this.multiple) {
+        // Combine and filter duplicated files
+        files = [...this._state.files, ...files]
+          .filter((curr, index, self) =>
+            self.findIndex(t => t.file.name === curr.file.name && t.file.size === curr.file.size) === index
+          );
+      }
+      return files;
+    }
+    // If user didn't select file
+    return this._state.files;
+  }
+
+  /**
+   * Iterates over given files
+   * Generates file name
+   * Starts the uploading task
+   */
+  private uploadFiles(files: FileItem[]) {
+    const chunk = files.map((item: FileItem) => {
+      // Generate file name
+      const path = `${new Date().getTime()}_${this.paramName || item.state.name}`;
+      const task = this.storage.upload(path, item.file);
+      return item.assignTask(task);
+    });
+    return forkJoin(...chunk);
   }
 
 }

@@ -1,12 +1,13 @@
 import { InjectionToken } from '@angular/core';
 
 export interface FireUploaderConfig {
+  dropZone?: boolean;
   paramName?: string;
   uniqueName?: boolean;
   placeholder?: string;
   multiple?: boolean;
   accept?: string;
-  maxUploadsPerTime?: number;
+  parallelUploads?: number;
   maxFiles?: number;
   maxFileSize?: number;
   autoStart?: boolean;

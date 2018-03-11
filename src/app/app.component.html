@@ -1,25 +1,72 @@
-<h1>Example</h1>
+<div class="container">
+  <div class="row align-items-center my-5">
+    <div class="col-">
+      <img class="logo" src="https://angularfirebase.com/images/logo.png">
+    </div>
+    <div class="col-sm">
+      <h1>Angular File Uploader for Firebase</h1>
+    </div>
+  </div>
 
-<file-uploader #uploader
-               accept="image/*"
-               [multiple]="true"
-               [resizeWidth]="500"
-               (files)="onFiles($event)"
-               (totalProgress)="onProgress($event)"
-               (complete)="onComplete($event)">
-  <file-preview [uploader]="uploader"
-                [showDetails]="true"
-                [showProgress]="true"></file-preview>
-</file-uploader>
+  <file-uploader #uploader
+                 accept="image/*"
+                 [multiple]="true"
+                 [maxFiles]="2"
+                 (files)="onFiles($event)"
+                 (progress)="onProgress($event)"
+                 (complete)="onComplete($event)"
+                 (success)="onSuccess($event)"
+                 (error)="onError($event)"
+                 (cancel)="onCancel($event)"
+                 (active)="onActiveChange($event)"
+                 (remove)="onRemove($event)">
+    <file-preview [uploader]="uploader"
+                  [showDetails]="true"
+                  [showProgress]="true"></file-preview>
+  </file-uploader>
 
+  <div class="my-3">
+    <button type="button" class="btn btn-primary" (click)="uploader.start()">Start</button>
+    <button type="button" class="btn btn-secondary" (click)="uploader.select()">Select</button>
+    <button type="button" class="btn btn-danger" (click)="uploader.clear()">Reset</button>
+    <button type="button" class="btn btn-warning" (click)="uploader.pause()">Pause</button>
+    <button type="button" class="btn btn-success" (click)="uploader.resume()">Resume</button>
+  </div>
 
-<button (click)="uploader.start()">Start</button>
+  <pre>
+    Files Count: {{ files?.length }}
+    Transfer Progress: {{ progress?.bytesTransferred | fileSize }} / {{ progress?.totalBytes | fileSize }}
+    Transfer Percentage: {{ progress?.percentage }}%
+    Active: <b [style.color]="active ? 'green' : 'red'">{{ active }}</b>
+  </pre>
 
-<pre>
-  Files Count: {{ files?.length }}
-  Transfer Progress: {{ totalProgress?.bytesTransferred | nFormatter }} / {{ totalProgress?.totalBytes | nFormatter }}
-  Transfer Percentage: {{ totalProgress?.progress }}%
+  <div class="mb-5">
+    <ngb-progressbar type="primary" [value]="progress?.percentage"></ngb-progressbar>
+  </div>
 
+  <p><a *ngFor="let link of links" href="{{link}}"> {{link}} </a></p>
 
-  <a *ngFor="let link of links" href="{{link}}"> {{link}} </a>
-</pre>
+  <div class="profile-pic-container">
+
+    <div class="profile-pic"
+         [style.backgroundImage]="getProfilePic()">
+      <file-uploader *ngIf="!lockProfile"
+                     class="profile-pic-uploader"
+                     placeholder="Upload profile photo"
+                     [thumbWidth]="200"
+                     [thumbHeight]="200"
+                     [multiple]="false"
+                     (files)="onProfilePic($event)" class="profile-pic-uploader">
+        <b>Upload Profile Photo</b>
+      </file-uploader>
+    </div>
+
+    <div class="my-3">
+      <button *ngIf="lockProfile" type="button" class="btn btn-primary" (click)="lockProfile = false">Edit Profile
+      </button>
+      <button *ngIf="!lockProfile" type="button" class="btn btn-primary" (click)="lockProfile = true">Save Profile
+      </button>
+    </div>
+
+  </div>
+</div>

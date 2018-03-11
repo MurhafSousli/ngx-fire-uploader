@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FileUploaderComponent } from '../file-uploader/file-uploader.component';
 import { FileItem } from '../file-uploader/file-item.class';
-import { PreviewerManager } from './previewer-manager';
+import { PreviewManager } from './preview-manager';
 
 @Component({
   selector: 'file-preview',
@@ -12,7 +12,7 @@ import { PreviewerManager } from './previewer-manager';
                [showProgress]="showProgress"
                [showRemove]="showRemove"
                (click)="itemClicked($event, item)"
-               (remove)="uploader.remove(item)">
+               (remove)="uploader.removeFile(item)">
     </file-item>
   `
 })
@@ -35,7 +35,7 @@ export class FilePreviewComponent {
 
   @Output() itemClick = new EventEmitter<FileItem>();
 
-  constructor(private manager: PreviewerManager) {
+  constructor(private manager: PreviewManager) {
   }
 
   itemClicked(e: Event, file: FileItem) {

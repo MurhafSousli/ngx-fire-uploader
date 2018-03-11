@@ -1,0 +1,36 @@
+.profile-pic {
+  position: relative;
+  background-size: cover;
+  height: 200px;
+  width: 200px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+.logo {
+  width: 140px;
+  height: 140px;
+}
+::ng-deep {
+  .profile-pic {
+    .profile-pic-uploader{
+      border-radius: 50%;
+      transition: all linear 0.2s;
+      &:hover {
+        box-shadow: inset 0 0 0 5px #1B95E0;
+      }
+    }
+    .uploader-content {
+      z-index: -1;
+      opacity: .5;
+      background: #000;
+    }
+    .dropzone {
+      border: 0;
+    }
+  }
+}
+.profile-pic-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
