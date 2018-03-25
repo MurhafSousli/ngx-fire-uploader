@@ -11,7 +11,7 @@ export interface FireUploaderConfig {
   maxFiles?: number;
   maxFileSize?: number;
   autoStart?: boolean;
-  createImageThumbnails?: boolean;
+  thumbs?: boolean;
   thumbWidth?: number;
   thumbHeight?: number;
   thumbMethod?: 'crop' | 'contain';
@@ -19,6 +19,7 @@ export interface FireUploaderConfig {
   resizeWidth?: number;
   resizeHeight?: number;
   resizeMimeType?: string;
+  resizeQuality?: number;
 }
 
 export const UPLOADER_CONFIG = new InjectionToken<FireUploaderConfig>('config');

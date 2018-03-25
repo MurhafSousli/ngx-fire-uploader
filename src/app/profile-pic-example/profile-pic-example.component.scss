@@ -1,0 +1,38 @@
+.profile-pic {
+  position: relative;
+  background-size: cover;
+  height: 200px;
+  width: 200px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+::ng-deep {
+  .profile-pic-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .profile-pic-uploader {
+      .overlay-layer {
+        border-radius: 50%;
+        box-shadow: none;
+        transition: all linear 0.2s;
+      }
+      .dropzone-placeholder {
+        color: white;
+        font-weight: bold;
+        background-color: rgba(black, 0.5);
+      }
+      &:hover {
+        .overlay-layer {
+          box-shadow: inset 0 0 0 5px #1B95E0;
+        }
+      }
+    }
+    .uploader-content {
+      z-index: -1;
+      opacity: .5;
+      background: #000;
+    }
+  }
+}

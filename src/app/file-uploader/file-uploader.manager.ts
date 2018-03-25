@@ -11,9 +11,15 @@ const defaultConfig: FireUploaderConfig = {
   parallelUploads: 1,
   maxFiles: 20,
   autoStart: false,
+  thumbs: true,
+  thumbMethod: 'contain',
   thumbWidth: 100,
   thumbHeight: 100,
-  resizeMethod: 'crop'
+  resizeMethod: 'crop',
+  resizeWidth: null,
+  resizeHeight: null,
+  resizeMimeType: null,
+  resizeQuality: 1
 };
 
 @Injectable()

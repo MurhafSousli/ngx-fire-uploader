@@ -8,7 +8,6 @@ file-uploader {
   align-items: center;
   width: 100%;
   height: 100%;
-  min-height: 100px;
   position: relative;
   * {
     box-sizing: border-box;
@@ -24,33 +23,45 @@ file-preview {
   justify-content: space-around;
 }
 
-.dropzone-placeholder {
-  width: 100%;
-  text-align: center;
+.dropzone-placeholder, .overlay-layer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .overlay-layer {
-  box-shadow: inset 0 0 0 3px #1B95E0;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  color: #E9ECEF;
+  box-shadow: inset 0 0 0 3px #E9ECEF;
+}
+
+.running {
+  .overlay-layer {
+    color: limegreen;
+    box-shadow: inset 0 0 0 3px limegreen;
+  }
+}
+
+.dragover {
+  .overlay-layer {
+    color: #1B95E0;
+    box-shadow: inset 0 0 0 3px #1B95E0;
+  }
 }
 
 .dropzone {
   padding: 1em;
   width: 100%;
   height: 100%;
+  min-height: 100px;
   cursor: pointer;
-  color: #ccc;
   text-align: center;
   display: flex;
   align-items: center;
-  &.dragover {
-    border-color: #000;
-    color: #000;
-  }
 }
 
 .uploader-content {

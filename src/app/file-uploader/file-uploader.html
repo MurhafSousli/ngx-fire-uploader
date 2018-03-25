@@ -1,15 +1,21 @@
-<input #fileInput type="file" [accept]="accept" [multiple]="multiple" (change)="addFiles(fileInput.files)">
-<div *ngIf="dropZone" class="dropzone"
-     (dropZone)="addFiles($event)"
-     (click)="fileInput.click()"
-     (dragOver)="hoverClass=$event">
-  <!--<div class="dropzone-placeholder" *ngIf="!state.files.length || !content.children.length">-->
-  <!--{{ placeholder }}-->
-  <!--</div>-->
-  <div class="overlay-layer">
-
+<ng-container *ngIf="state$ | async; let state">
+  <input #fileInput type="file"
+         [accept]="accept"
+         [multiple]="multiple"
+         (click)="fileInput.value=null"
+         (change)="addFiles(fileInput.files)">
+  <div *ngIf="dropZone"
+       class="dropzone"
+       (dropZone)="addFiles($event)"
+       (click)="fileInput.click()"
+       (dragOver)="hoverClass=$event">
+    <div class="dropzone-placeholder"
+         *ngIf="!state.files.length || !content.children.length">
+      {{ placeholder }}
+    </div>
+    <div class="overlay-layer"></div>
+    <div class="uploader-content" #content>
+      <ng-content></ng-content>
+    </div>
   </div>
-  <div class="uploader-content" #content>
-    <ng-content></ng-content>
-  </div>
-</div>
+</ng-container>

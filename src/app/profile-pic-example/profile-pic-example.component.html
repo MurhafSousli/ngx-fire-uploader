@@ -1,0 +1,24 @@
+<div class="profile-pic-container">
+  <div class="profile-pic"
+       [style.backgroundImage]="profilePic$ | async | safeStyle">
+    <file-uploader *ngIf="uploadProfilePic"
+                   class="profile-pic-uploader"
+                   placeholder="Upload profile photo"
+                   [thumbWidth]="200"
+                   [thumbHeight]="200"
+                   [multiple]="false"
+                   (files)="onProfilePic($event)">
+      <b>Upload Profile Photo</b>
+    </file-uploader>
+  </div>
+
+  <div class="my-3">
+    <button *ngIf="uploadProfilePic" type="button" class="btn btn-primary" (click)="uploadProfilePic = false">
+      Save Profile
+    </button>
+    <button *ngIf="!uploadProfilePic" type="button" class="btn btn-primary" (click)="uploadProfilePic = true">
+      Edit Profile
+    </button>
+  </div>
+
+</div>

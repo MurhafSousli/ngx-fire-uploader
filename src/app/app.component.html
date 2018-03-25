@@ -1,72 +1,37 @@
-<div class="container">
-  <div class="row align-items-center my-5">
-    <div class="col-">
-      <img class="logo" src="https://angularfirebase.com/images/logo.png">
-    </div>
-    <div class="col-sm">
-      <h1>Angular File Uploader for Firebase</h1>
+<header class="navbar navbar-dark bg-dark navbar-fixed-top navbar-expand-lg mb-5">
+  <div class="container" style="padding-left: 0; padding-right: 0;">
+
+    <a class="navbar-brand" routerLink="" (click)="navbarCollapsed = true">
+      <img src="https://angularfirebase.com/images/logo.png"
+           width="30" height="30"
+           class="d-inline-block align-top">
+      Angular Firebase Uploader
+    </a>
+
+    <button class="navbar-toggler navbar-toggler-right" type="button"
+            (click)="navbarCollapsed = !navbarCollapsed"
+            [attr.aria-expanded]="!navbarCollapsed"
+            aria-controls="navbarContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="navbar-collapse" [ngbCollapse]="navbarCollapsed" id="navbarContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+          <a class="nav-link" routerLink="" (click)="navbarCollapsed = true">Basic</a>
+        </li>
+        <li class="nav-item" routerLinkActive="active">
+          <a class="nav-link" routerLink="/profile-pic" (click)="navbarCollapsed = true">Profile Pic</a>
+        </li>
+      </ul>
     </div>
   </div>
+</header>
 
-  <file-uploader #uploader
-                 accept="image/*"
-                 [multiple]="true"
-                 [maxFiles]="2"
-                 (files)="onFiles($event)"
-                 (progress)="onProgress($event)"
-                 (complete)="onComplete($event)"
-                 (success)="onSuccess($event)"
-                 (error)="onError($event)"
-                 (cancel)="onCancel($event)"
-                 (active)="onActiveChange($event)"
-                 (remove)="onRemove($event)">
-    <file-preview [uploader]="uploader"
-                  [showDetails]="true"
-                  [showProgress]="true"></file-preview>
-  </file-uploader>
-
-  <div class="my-3">
-    <button type="button" class="btn btn-primary" (click)="uploader.start()">Start</button>
-    <button type="button" class="btn btn-secondary" (click)="uploader.select()">Select</button>
-    <button type="button" class="btn btn-danger" (click)="uploader.clear()">Reset</button>
-    <button type="button" class="btn btn-warning" (click)="uploader.pause()">Pause</button>
-    <button type="button" class="btn btn-success" (click)="uploader.resume()">Resume</button>
-  </div>
-
-  <pre>
-    Files Count: {{ files?.length }}
-    Transfer Progress: {{ progress?.bytesTransferred | fileSize }} / {{ progress?.totalBytes | fileSize }}
-    Transfer Percentage: {{ progress?.percentage }}%
-    Active: <b [style.color]="active ? 'green' : 'red'">{{ active }}</b>
-  </pre>
-
-  <div class="mb-5">
-    <ngb-progressbar type="primary" [value]="progress?.percentage"></ngb-progressbar>
-  </div>
-
-  <p><a *ngFor="let link of links" href="{{link}}"> {{link}} </a></p>
-
-  <div class="profile-pic-container">
-
-    <div class="profile-pic"
-         [style.backgroundImage]="getProfilePic()">
-      <file-uploader *ngIf="!lockProfile"
-                     class="profile-pic-uploader"
-                     placeholder="Upload profile photo"
-                     [thumbWidth]="200"
-                     [thumbHeight]="200"
-                     [multiple]="false"
-                     (files)="onProfilePic($event)" class="profile-pic-uploader">
-        <b>Upload Profile Photo</b>
-      </file-uploader>
-    </div>
-
-    <div class="my-3">
-      <button *ngIf="lockProfile" type="button" class="btn btn-primary" (click)="lockProfile = false">Edit Profile
-      </button>
-      <button *ngIf="!lockProfile" type="button" class="btn btn-primary" (click)="lockProfile = true">Save Profile
-      </button>
-    </div>
-
-  </div>
+<div class="container" style="padding-left: 0; padding-right: 0;">
+  <router-outlet></router-outlet>
 </div>
+
+<simple-notifications></simple-notifications>

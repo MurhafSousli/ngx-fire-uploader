@@ -1,28 +1,28 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FileUploaderComponent } from '../file-uploader/file-uploader.component';
 import { FileItem } from '../file-uploader/file-item.class';
 import { PreviewManager } from './preview-manager';
 
 @Component({
   selector: 'file-preview',
+  preserveWhitespaces: false,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <file-item *ngFor="let item of (uploader.state$ | async).files"
-               [state]="item.state$ | async"
+    <file-item *ngFor="let file of (uploader.state$ | async).files"
+               [snapshot]="file.state$ | async"
                [showDetails]="showDetails"
                [showProgress]="showProgress"
                [showRemove]="showRemove"
-               (click)="itemClicked($event, item)"
-               (remove)="uploader.removeFile(item)">
+               [extensions]="extensions"
+               (click)="itemClicked($event, file)"
+               (remove)="uploader.removeFile(file)">
     </file-item>
   `
 })
-export class FilePreviewComponent {
+export class FilePreviewComponent implements OnInit {
 
   // Reference to the uploader
   @Input() uploader: FileUploaderComponent;
-
-  @Input() previewWidth: number = this.manager.config.previewWidth;
-  @Input() previewHeight: number = this.manager.config.previewHeight;
 
   // Show the file-uploader progress bar of each file item
   @Input() showProgress: boolean = this.manager.config.showProgress;
@@ -33,9 +33,18 @@ export class FilePreviewComponent {
   // Show remove button
   @Input() showRemove: boolean = this.manager.config.showRemove;
 
+  // Set item background based on file extension
+  @Input() extensions: any = this.manager.config.extensions;
+
   @Output() itemClick = new EventEmitter<FileItem>();
 
   constructor(private manager: PreviewManager) {
+  }
+
+  ngOnInit() {
+    if (!(this.uploader instanceof FileUploaderComponent)) {
+      throw new Error('[FilePreview]: [uploader] input must has FileUploader reference.');
+    }
   }
 
   itemClicked(e: Event, file: FileItem) {

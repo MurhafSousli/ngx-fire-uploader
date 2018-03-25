@@ -16,10 +16,10 @@ export interface FileState {
   ref?: any;
   name?: string;
   type?: string;
+  extension?: string;
   progress?: UploaderProgress;
-  preview?: string;
+  thumbnail?: string;
   downloadURL?: string;
   active?: boolean;
-  success?: boolean;
-  error?: any;
+  state?: string;
 }

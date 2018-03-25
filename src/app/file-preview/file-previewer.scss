@@ -1,6 +1,7 @@
 file-preview {
   margin: 10px;
 }
+
 file-item {
   position: relative;
   width: 100px;
@@ -13,7 +14,6 @@ file-item {
     }
     .file-thumb {
       filter: blur(4px);
-      background-color: rgba(0,0,0, 0.3);
     }
   }
 }
@@ -41,7 +41,8 @@ file-item {
   background: linear-gradient(to right, #A6FFCB, #12D8FA, #1FA2FF);
 }
 
-.file-active {
+.file-running,
+.file-paused {
   .file-progress-bar {
     opacity: 1;
   }
@@ -91,13 +92,12 @@ file-item {
 .file-item {
   width: 100%;
   height: 100%;
-  background-color: rgba(0,0,0,0.2);
   overflow: hidden;
   position: relative;
   border-radius: 4px;
 }
 
-.file-item, .file-overlay {
+.file-item, .file-thumb, .file-overlay {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -110,21 +110,34 @@ file-item {
   z-index: 10;
 }
 
-.file-thumb, .file-details {
-  width: 100%;
-  height: 100%;
-}
-
 .file-thumb {
-  object-fit: cover;
+  background-color: #007BFF;
+  span {
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
 }
 
-.file-details {
+.file-thumb, .file-thumb-img, .file-details {
   position: absolute;
   left: 0;
   right: 0;
   top: 0;
   bottom: 0;
+}
+
+.file-thumb-img {
+  background-color: white;
+  img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.file-details {
   z-index: 100;
   opacity: 0;
   color: black;
@@ -164,27 +177,36 @@ file-item {
   right: 0;
   top: 0;
   transform: translate(50%, -50%);
-  width: 1.2em;
-  height: 1.2em;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
-  padding: 0.25em;
-  box-shadow: 0 0 1px rgba(0, 0, 0, 0.4);
-  background-color: #FCE1E3;
+  background-color: #FFF;
+  box-shadow: 0 1px 3px rgba(#000, 0.6);
+  overflow: hidden;
 }
 
 .file-remove-button {
+  background-color: #FFF;
+  border: 0;
+  padding: 0;
   width: 100%;
   height: 100%;
   transition: all linear 0.2s;
+  cursor: pointer;
   &:active {
     transform: rotate(180deg) perspective(1px);
+  }
+  &:active,
+  &:focus {
+    outline: none;
   }
 }
 
 .file-remove-icon {
-  width: 100%;
-  height: 100%;
-  background-image: url('assets/remove.svg');
+  margin: auto;
+  width: 10px;
+  height: 10px;
+  background-image: url('assets/cancel.svg');
   background-size: cover;
   background-repeat: no-repeat;
 }
