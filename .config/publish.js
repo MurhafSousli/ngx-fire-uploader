@@ -1,7 +1,7 @@
 const execSync = require('child_process').execSync,
   packages = [
     'core',
-    'preview'
+    'manager'
   ];
 
 packages.map(function (package) {

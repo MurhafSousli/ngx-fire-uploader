@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { UploaderProgress } from '../file-uploader/fire-uploader.model';
 import { NotificationsService } from 'angular2-notifications';
-import { FileItem } from '../file-uploader/file-item.class';
+import { FileItem, UploaderProgress } from '../fire-uploader';
 
 @Component({
   selector: 'app-basic-example',
@@ -48,7 +47,7 @@ export class BasicExampleComponent {
   }
 
   onSuccess(e: FileItem) {
-    this.notifications.success('File uploaded successfully!', e.state.name, this.notifOptions);
+    this.notifications.success('File uploaded successfully!', e.snapshot.name, this.notifOptions);
     console.log('success', e);
   }
 
@@ -62,11 +61,11 @@ export class BasicExampleComponent {
   }
 
   onRemove(e: FileItem) {
-    this.notifications.info('File removed!', e.state.name, this.notifOptions);
+    this.notifications.info('File removed!', e.snapshot.name, this.notifOptions);
   }
 
   onCancel(e: FileItem) {
-    this.notifications.info('Upload cancelled!', e.state.name, this.notifOptions);
+    this.notifications.info('Upload cancelled!', e.snapshot.name, this.notifOptions);
   }
 
   onError(e) {

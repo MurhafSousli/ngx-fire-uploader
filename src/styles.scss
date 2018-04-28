@@ -3,9 +3,17 @@
 @import url('https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css');
 @import url('https://cdnjs.cloudflare.com/ajax/libs/open-iconic/1.1.1/font/css/open-iconic-bootstrap.min.css');
 
-@import 'app/file-uploader/file-uploader';
-@import 'app/file-preview/file-previewer';
+@import 'app/fire-uploader/fire-uploader';
+@import 'app/fire-manager/fire-manager';
 
 body {
   //font-family: 'Roboto Mono', monospace;
+}
+
+h5 {
+  display: inline-block;
+  border-bottom: 1px solid lightgray;
+  padding-bottom: 10px;
+  margin-top: 15px;
+  margin-bottom: 15px;
 }

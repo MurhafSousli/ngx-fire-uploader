@@ -1,4 +1,4 @@
-<file-uploader #uploader
+<fire-uploader #uploader
                [accept]="accept"
                [multiple]="multiple"
                [uniqueName]="uniqueName"
@@ -26,30 +26,44 @@
   <file-preview [uploader]="uploader"
                 [showDetails]="true"
                 [showProgress]="true"></file-preview>
-</file-uploader>
+</fire-uploader>
 
-<div class="my-3">
-  <button type="button" class="btn btn-info" (click)="uploader.select()">Add files</button>
-  <button type="button" class="btn btn-success" (click)="uploader.start()">Start</button>
-  <button type="button" class="btn btn-primary" (click)="uploader.cancel()">Cancel</button>
-  <button type="button" class="btn btn-primary" (click)="uploader.pause()">Pause</button>
-  <button type="button" class="btn btn-primary" (click)="uploader.resume()">Resume</button>
-  <button type="button" class="btn btn-danger" (click)="uploader.reset()">Reset</button>
+
+<div class="row">
+  <div class="col">
+
+    <h5>Uploader Functions</h5>
+
+    <div class="my-3">
+      <button type="button" class="btn btn-info" (click)="uploader.select()">Add files</button>
+      <button type="button" class="btn btn-success" (click)="uploader.start()">Start</button>
+      <button type="button" class="btn btn-primary" (click)="uploader.cancel()">Cancel</button>
+      <button type="button" class="btn btn-primary" (click)="uploader.pause()">Pause</button>
+      <button type="button" class="btn btn-primary" (click)="uploader.resume()">Resume</button>
+      <button type="button" class="btn btn-danger" (click)="uploader.reset()">Reset</button>
+    </div>
+  </div>
+
+  <div class="col">
+    <h5>Uploader State</h5>
+
+    <pre>
+      <span>Files Count: {{ files.length }}</span>
+      <span>Transfer Progress: {{ progress?.bytesTransferred | fileSize }} / {{ progress?.totalBytes | fileSize }}</span>
+      <span>Transfer Percentage: {{ progress?.percentage }}%</span>
+      <span>Active: <b [style.color]="active ? 'green' : 'red'">{{ active }}</b></span>
+    </pre>
+
+
+    <div class="mb-5">
+      <ngb-progressbar type="primary" [value]="progress?.percentage"></ngb-progressbar>
+    </div>
+
+    <p><a *ngFor="let link of links" href="{{link}}"> {{link}} </a></p>
+  </div>
 </div>
 
-<pre>
-  Files Count: {{ files.length }}
-  Transfer Progress: {{ progress?.bytesTransferred | fileSize }} / {{ progress?.totalBytes | fileSize }}
-  Transfer Percentage: {{ progress?.percentage }}%
-  Active: <b [style.color]="active ? 'green' : 'red'">{{ active }}</b>
-</pre>
-
-
-<div class="mb-5">
-  <ngb-progressbar type="primary" [value]="progress?.percentage"></ngb-progressbar>
-</div>
-
-<p><a *ngFor="let link of links" href="{{link}}"> {{link}} </a></p>
+<h5>Uploader Inputs</h5>
 
 <div class="row">
   <div class="col">
@@ -171,7 +185,9 @@
     <div class="input-group mb-3">
       <button class="btn btn-info mr-1" (click)="accept = null">All Files</button>
       <button class="btn btn-info mr-1" (click)="accept = 'image/*'">Only Images</button>
-      <button class="btn btn-info mr-1" (click)="accept = 'application/msword, application/pdf'">Only Word and PDF files</button>
+      <button class="btn btn-info mr-1" (click)="accept = 'application/msword, application/pdf'">Only Word and PDF
+        files
+      </button>
     </div>
 
   </div>

@@ -1,6 +1,6 @@
 import { AppPage } from './app.po';
 
-describe('ngx-file-uploader-file App', () => {
+describe('ngx-fire-uploader-file App', () => {
   let page: AppPage;
 
   beforeEach(() => {

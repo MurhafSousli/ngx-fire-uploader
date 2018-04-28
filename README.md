@@ -169,7 +169,7 @@ yarn add @ngx-uploader/core @ngx-uploader/previewer
   imports: [
     // ..
     FileUploaderModule.forRoot(),
-    FilePreviewModule.forRoot(),
+    FireManagerModule.forRoot(),
   ]
   // ..
 })
@@ -205,7 +205,7 @@ Thumbnails is generated for images files by default, for other files types you c
 The following example sets a custom background image for pdf files
 
 ```ts
-FilePreviewModule.forRoot({
+FireManagerModule.forRoot({
   extensions: {
     pdf: 'url("assets/pdf.svg")',
     doc: '#335599'

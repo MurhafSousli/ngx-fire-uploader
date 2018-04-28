@@ -1,7 +1,7 @@
 const fs = require("fs"),
   packages = [
     'core',
-    'preview'
+    'manager'
   ];
 
 // update `VERSION` in package.json for all sub-packages

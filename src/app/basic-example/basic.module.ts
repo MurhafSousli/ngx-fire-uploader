@@ -5,9 +5,11 @@ import { RouterModule } from '@angular/router';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap/dropdown/dropdown.module';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap/collapse/collapse.module';
 import { NgbProgressbarModule } from '@ng-bootstrap/ng-bootstrap/progressbar/progressbar.module';
-import { FileUploaderModule } from '../file-uploader/file-uploader.module';
-import { FilePreviewModule } from '../file-preview/file-preview.module';
 import { SimpleNotificationsModule } from 'angular2-notifications';
+
+import { FireUploaderModule } from '../fire-uploader';
+import { FireManagerModule } from '../fire-manager';
+
 import { BasicExampleComponent } from './basic-example.component';
 
 @NgModule({
@@ -21,8 +23,8 @@ import { BasicExampleComponent } from './basic-example.component';
     NgbCollapseModule,
     NgbProgressbarModule,
     SimpleNotificationsModule,
-    FileUploaderModule,
-    FilePreviewModule.forRoot({
+    FireUploaderModule,
+    FireManagerModule.forRoot({
       extensions: {
         pdf: 'url("assets/pdf.svg")',
         doc: '#335599'

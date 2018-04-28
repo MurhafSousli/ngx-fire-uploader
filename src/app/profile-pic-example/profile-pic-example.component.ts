@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { FileItem } from '../file-uploader/file-item.class';
-import { FileState } from '../file-uploader/fire-uploader.model';
+import { FileItem, FileSnapshot } from '../fire-uploader';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 import { filter } from 'rxjs/operators/filter';
@@ -29,9 +28,9 @@ export class ProfilePicExampleComponent implements OnInit {
 
   onProfilePic(photos: FileItem[]) {
     if (photos.length) {
-      photos[0].state$.pipe(
-        filter((state: FileState) => !!state.thumbnail),
-        map((state: FileState) => this.process$.next(state.thumbnail)),
+      photos[0].snapshot$.pipe(
+        filter((state: FileSnapshot) => !!state.thumbnail),
+        map((state: FileSnapshot) => this.process$.next(state.thumbnail)),
         take(1)
       ).subscribe();
     }

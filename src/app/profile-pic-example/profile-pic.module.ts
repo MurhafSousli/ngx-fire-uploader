@@ -1,7 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { FileUploaderModule } from '../file-uploader/file-uploader.module';
+
+import { FireUploaderModule } from '../fire-uploader';
+
 import { ProfilePicExampleComponent } from './profile-pic-example.component';
 import { SafeStylePipe } from './safe-style.pipe';
 
@@ -13,7 +15,7 @@ import { SafeStylePipe } from './safe-style.pipe';
   ],
   imports: [
     CommonModule,
-    FileUploaderModule,
+    FireUploaderModule,
     RouterModule.forChild([
       {
         path: '',

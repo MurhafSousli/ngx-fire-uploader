@@ -5,14 +5,14 @@
   "homepage": "http://github.com/murhafsousli/ngx-fire-uploader",
   "author": {
     "name": "Murhaf Sousli",
-    "url": "http://github.com/murhafsousli"
+    "url": "https://github.com/murhafsousli"
   },
   "repository": {
     "type": "git",
     "url": "git://github.com/murhafsousli/ngx-fire-uploader.git"
   },
   "bugs": {
-    "url": "http://github.com/murhafsousli/ngx-fire-uploader/issues"
+    "url": "https://github.com/murhafsousli/ngx-fire-uploader/issues"
   },
   "license": "MIT",
   "keywords": [

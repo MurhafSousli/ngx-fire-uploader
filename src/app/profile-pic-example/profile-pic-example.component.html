@@ -1,7 +1,7 @@
 <div class="profile-pic-container">
   <div class="profile-pic"
        [style.backgroundImage]="profilePic$ | async | safeStyle">
-    <file-uploader *ngIf="uploadProfilePic"
+    <fire-uploader *ngIf="uploadProfilePic"
                    class="profile-pic-uploader"
                    placeholder="Upload profile photo"
                    [thumbWidth]="200"
@@ -9,7 +9,7 @@
                    [multiple]="false"
                    (files)="onProfilePic($event)">
       <b>Upload Profile Photo</b>
-    </file-uploader>
+    </fire-uploader>
   </div>
 
   <div class="my-3">

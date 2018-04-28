@@ -18,8 +18,8 @@ const processors = [
 const CORE_SRC = 'lib/core/src/';
 const CORE_DIST = 'build/core/';
 
-const PREVIEWER_SRC = 'lib/previewer/src/';
-const PREVIEWER_DIST = 'build/previewer/';
+const PREVIEWER_SRC = 'lib/manager/src/';
+const PREVIEWER_DIST = 'build/manager/';
 
 function writeStyleFile(file) {
 
