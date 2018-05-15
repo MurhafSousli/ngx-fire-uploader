@@ -4,6 +4,8 @@
     "entryFile": "./src/index.ts",
     "languageLevel": ["dom", "es2017"],
     "externals": {
+      "firebase": "firebase",
+      "angularfire2": "angularfire2",
       "@ngx-fire-uploader/core": "@ngx-fire-uploader/core"
     }
   },
