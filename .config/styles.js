@@ -18,8 +18,8 @@ const processors = [
 const CORE_SRC = 'lib/core/src/';
 const CORE_DIST = 'build/core/';
 
-const PREVIEWER_SRC = 'lib/manager/src/';
-const PREVIEWER_DIST = 'build/manager/';
+const MANAGER_SRC = 'lib/manager/src/';
+const MANAGER_DIST = 'build/manager/';
 
 function writeStyleFile(file) {
 
@@ -58,7 +58,7 @@ function start(startPath, filter, callback) {
   }
 }
 
-function sassTask(srcDir, destDir, filePath) {
+function sassTask(srcDir, distDir, filePath) {
 
   const theme = path.relative(srcDir, filePath);
 
@@ -81,10 +81,10 @@ function sassTask(srcDir, destDir, filePath) {
       file.contents = new Buffer(result.css);
 
       /** Write css files to button dir */
-      file.path = gulpUtil.replaceExtension(distButtonDir + theme, '.css');
+      file.path = gulpUtil.replaceExtension(distDir + theme, '.css');
 
       writeStyleFile(file);
-      fs.createReadStream(filePath).pipe(fs.createWriteStream(destDir + theme));
+      fs.createReadStream(filePath).pipe(fs.createWriteStream(distDir + theme));
     });
   }
 }
@@ -95,6 +95,6 @@ start(CORE_SRC, /\.scss$/, function (filename) {
 });
 
 // Compile previewer styles
-start(PREVIEWER_SRC, /\.scss$/, function (filename) {
-  sassTask(PREVIEWER_SRC, PREVIEWER_DIST, filename);
+start(MANAGER_SRC, /\.scss$/, function (filename) {
+  sassTask(MANAGER_SRC, MANAGER_DIST, filename);
 });

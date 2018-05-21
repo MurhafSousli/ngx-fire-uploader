@@ -26,6 +26,7 @@ export interface FileSnapshot {
 
 export interface FireUploaderConfig {
   dropZone?: boolean;
+  paramDir?: string;
   paramName?: string;
   uniqueName?: boolean;
   placeholder?: string;

@@ -29,6 +29,7 @@ export class BasicExampleComponent {
   maxFilesCount = 20;
   maxFileSize = 5;
   paramName;
+  paramDir;
   placeholder = 'Drop files here or click to select';
   accept = null;
   parallelUpload = 1;
@@ -53,6 +54,7 @@ export class BasicExampleComponent {
 
   onComplete(e) {
     this.links = e.map(file => file.downloadURL);
+    console.log('complete', e);
     this.notifications.info('Operation finished!', `${this.links.length} files has been uploaded`, this.notifOptions);
   }
 
@@ -74,6 +76,10 @@ export class BasicExampleComponent {
 
   onReset() {
     this.notifications.alert('Cleared!', 'All items has been removed', this.notifOptions);
+  }
+
+  onValue(e) {
+    console.log('value', e);
   }
 
   onActiveChange(e) {

@@ -74,6 +74,7 @@ All list of inputs and outputs
                [dropZone]="true"
                [placeholder]="'Drop files here or select to upload'"
                [paramName]="'attachment'"
+               [paramDir]="'photos'"
                [parallelUploads]="2"
                [thumbs]="true"
                [thumbWidth]="100"
@@ -97,25 +98,28 @@ All list of inputs and outputs
 
 The following inputs can also be set from the `FireUpload.forRoot(config?)`
 
-| Name                  | Default    | Description                                           |
-| --------------------- | ---------- | ----------------------------------------------------- |
-| paramName             | null       |                                                       |
-| uniqueName            | null       |                                                       |
-| placeholder           | null       |                                                       |
-| multiple              | null       |                                                       |
-| accept                | null       |                                                       |
-| maxUploadsPerTime     | null       |                                                       | 
-| maxFiles              | null       |                                                       | 
-| maxFileSize           | null       |                                                       | 
-| autoStart             | null       |                                                       | 
-| createImageThumbnails | null       |                                                       | 
-| thumbnailMethod       | null       |                                                       | 
-| resizeMethod          | null       |                                                       | 
-| resizeWidth           | null       |                                                       | 
-| resizeHeight          | null       |                                                       | 
-| thumbWidth            | null       |                                                       | 
-| thumbHeight           | null       |                                                       | 
-| resizeMimeType        | null       |                                                       | 
+| Name                  | Default            | Description                                           |
+| --------------------- | ------------------ | ----------------------------------------------------- |
+| dropZone              | true               | Enable a dropzone.                                    |
+| paramName             | null               | Save the file with custom name in the cloud.          |
+| paramDir              | null               | Specify a dir to store the file in, e.g. `photos`     |
+| uniqueName            | true               | Create a unique name for uploader files.              |
+| placeholder           | 'Drop files...'    | Placeholder text.                                     |
+| multiple              | true               | Enables multiple file select.                         |
+| accept                | null               | The accepted extensions.                              |
+| parallelUploads       | 1                  | Maximum number of files uploading at a time.          |
+| maxFiles              | 20                 | Maximum files to be selected.                         |
+| maxFileSize           | null               | Maximum size for each file.                           |
+| autoStart             | false              | Start uploading once user selects the files.          |
+| createImageThumbnails | true               | Create image thumbnails.                              |
+| thumbs                | true               | Generate thumbnails for image files.                  |
+| thumbnailMethod       | 'contain'          | The method for resizing the images for preview.       |
+| resizeMethod          | 'crop'             | The method for resizing the images before uploading.  |
+| resizeWidth           | null               | Image new width in px.                                |
+| resizeHeight          | null               | Image new height in px.                               |
+| thumbWidth            | 100                | Thumbnail width in px                                 |
+| thumbHeight           | 100                | Thumbnail height in px                                |
+| resizeMimeType        | original mime type | The mime type of the resized image e.g. `image/jpeg`  |.
 
 
 ### Outputs
@@ -124,13 +128,13 @@ The following inputs can also be set from the `FireUpload.forRoot(config?)`
 | -------------- | --------------------------------------------------------- |
 | files          | Stream that emits when new files are added to the queue.  |
 | progress       | Stream that emits when total upload progress.             |
-| active         | Stream that emits when uploading starts or stops.         | 
+| active         | Stream that emits when uploading starts or stops.         |
 | success        | Stream that emits when a file is successfully uploaded.   |
 | complete       | Stream that emits when the upload operation has finished. |
 | reset          | Stream that emits when the uploader resets.               |
-| error          | Stream that emits when an error occurs.                   | 
-| cancel         | Stream that emits when a uploading is cancelled.          | 
-| remove         | Stream that emits when a file is removed.                 | 
+| error          | Stream that emits when an error occurs.                   |
+| cancel         | Stream that emits when a uploading is cancelled.          |
+| remove         | Stream that emits when a file is removed.                 |
 
 
 ### Functions
@@ -138,13 +142,13 @@ The following inputs can also be set from the `FireUpload.forRoot(config?)`
 | Name                      | Description                                           |
 | ------------------------- | ----------------------------------------------------- |
 | Uploader.state$           | Stream that emits File Uploader state.                |
-| Uploader.**start()**      | Start uploading files                                 |
-| Uploader.**addFiles()**   | Add files to the queue                                |
-| Uploader.**removeFile()** | Remove file from the queue                            |
-| Uploader.**pause()**      | Pause all files that are being uploaded               |
-| Uploader.**resume()**     | Resume all files that are being paused                |
-| Uploader.**cancel()**     |                                                       | 
-| Uploader.**clear()**      |                                                       | 
+| Uploader.**start()**      | Start file upload.                                    |
+| Uploader.**addFiles()**   | Add files to the queue.                               |
+| Uploader.**removeFile()** | Remove file from the queue.                           |
+| Uploader.**pause()**      | Pause all files that are being uploaded.              |
+| Uploader.**resume()**     | Resume all files that are being paused.               |
+| Uploader.**cancel()**     | Cancel file upload.                                   |
+| Uploader.**clear()**      | Clear the queue, reset the uploader.                  |
 
 
 

@@ -48,6 +48,9 @@ export class FireUploaderComponent implements OnInit, OnDestroy {
   // If null, original file name will be used.
   @Input() paramName: string = this._manager.config.paramName;
 
+  // Specify a dir to store the file in
+  @Input() paramDir: string = this._manager.config.paramDir;
+
   // Use date.now to create a unique name for uploaded file
   @Input() uniqueName: boolean = this._manager.config.uniqueName;
 
@@ -188,7 +191,7 @@ export class FireUploaderComponent implements OnInit, OnDestroy {
         takeUntil(this._cancelUpload$),
         finalize(() => {
           // Emits uploaded files.
-          const uploaded = this._state.files.filter((item: FileItem) => item.snapshot === 'success');
+          const uploaded = this._state.files.filter((item: FileItem) => item.snapshot.state === 'success');
           this.completeEmitter.emit(uploaded);
 
           // Emits the URLs of the uploaded files.
@@ -347,8 +350,13 @@ export class FireUploaderComponent implements OnInit, OnDestroy {
    */
   private uploadFiles(files: FileItem[]) {
     const chunk = files.map((item: FileItem) => {
-      // Generate file name
-      const path = `${new Date().getTime()}_${this.paramName || item.snapshot.name}`;
+
+      const dirName = this.paramDir ? `${this.paramDir}/` : '';
+      const prefixName = this.uniqueName ? `${new Date().getTime()}_` : '';
+      const fileName = this.paramName || item.snapshot.name;
+
+      const path = dirName + prefixName + fileName;
+
       const task = this._storage.upload(path, item.file);
       return item.assignTask(task);
     });

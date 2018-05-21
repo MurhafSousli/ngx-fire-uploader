@@ -7,6 +7,7 @@
                [dropZone]="dropZone"
                [placeholder]="placeholder"
                [paramName]="paramName"
+               [paramDir]="paramDir"
                [parallelUploads]="parallelUpload"
                [thumbs]="thumbs"
                [thumbWidth]="thumbWidth"
@@ -17,6 +18,7 @@
                (files)="onFiles($event)"
                (progress)="onProgress($event)"
                (complete)="onComplete($event)"
+               (value)="onValue($event)"
                (success)="onSuccess($event)"
                (error)="onError($event)"
                (cancel)="onCancel($event)"
@@ -91,6 +93,14 @@
       </div>
       <input type="text" class="form-control" aria-label="File name" aria-describedby="paramName"
              [(ngModel)]="paramName">
+    </div>
+    
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <span class="input-group-text" id="paramDir">File directory parameter</span>
+      </div>
+      <input type="text" class="form-control" aria-label="File name" aria-describedby="paramDir"
+             [(ngModel)]="paramDir">
     </div>
 
     <div class="input-group mb-3">
