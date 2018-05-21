@@ -1,6 +1,6 @@
 {
   "name": "ngx-fire-uploader",
-  "version": "0.7.0",
+  "version": "0.7.6",
   "license": "MIT",
   "scripts": {
     "ng": "ng",
@@ -45,7 +45,7 @@
     "@types/jasmine": "~2.8.3",
     "@types/jasminewd2": "~2.0.2",
     "@types/node": "~6.0.60",
-    "autoprefixer": "^8.1.0",
+    "autoprefixer": "^8.5.0",
     "codelyzer": "^4.0.1",
     "cssnano": "^3.10.0",
     "gulp-util": "^3.0.8",
@@ -57,7 +57,7 @@
     "karma-jasmine": "~1.1.0",
     "karma-jasmine-html-reporter": "^0.2.2",
     "ng-packagr": "^2.4.4",
-    "postcss": "^6.0.20",
+    "postcss": "^6.0.22",
     "postcss-strip-inline-comments": "^0.1.5",
     "protractor": "~5.1.2",
     "ts-node": "~4.1.0",

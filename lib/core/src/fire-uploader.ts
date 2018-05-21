@@ -5,6 +5,7 @@ import { UPLOADER_CONFIG } from './fire-uploader.token';
 const defaultConfig: FireUploaderConfig = {
   dropZone: true,
   paramName: null,
+  paramDir: null,
   uniqueName: true,
   placeholder: 'Drop files here or click to select',
   multiple: true,
