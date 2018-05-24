@@ -1,24 +1,32 @@
 <div class="profile-pic-container">
-  <div class="profile-pic"
-       [style.backgroundImage]="profilePic$ | async | safeStyle">
-    <fire-uploader *ngIf="uploadProfilePic"
-                   class="profile-pic-uploader"
-                   placeholder="Upload profile photo"
-                   [thumbWidth]="200"
-                   [thumbHeight]="200"
-                   [multiple]="false"
-                   (files)="onProfilePic($event)">
-      <b>Upload Profile Photo</b>
-    </fire-uploader>
+
+  <fire-photo #coverUploader id="coverPic" [disabled]="disabled" [loadingTemplate]="coverLoading" (progress)="onCoverProgress($event)">
+    Upload Cover Photo
+  </fire-photo>
+
+  <div class="container">
+    <fire-photo #profileUploader id="profilePic" [src]="defaultProfilePhoto" [disabled]="disabled" [thumbHeight]="200" [thumbWidth]="200">
+      Upload Profile Photo
+    </fire-photo>
+
+    <div class="my-3 float-right">
+      <button *ngIf="!disabled" class="btn" (click)="cancel(coverUploader, profileUploader)">
+        Cancel
+      </button>
+
+      <button *ngIf="!disabled" class="btn btn-orange" (click)="saveChanges(coverUploader, profileUploader)">
+        Save Changes
+      </button>
+
+      <button *ngIf="disabled" class="btn btn-orange" (click)="disabled = false">
+        Edit Profile
+      </button>
+    </div>
+
   </div>
 
-  <div class="my-3">
-    <button *ngIf="uploadProfilePic" type="button" class="btn btn-primary" (click)="uploadProfilePic = false">
-      Save Profile
-    </button>
-    <button *ngIf="!uploadProfilePic" type="button" class="btn btn-primary" (click)="uploadProfilePic = true">
-      Edit Profile
-    </button>
-  </div>
+  <ng-template #coverLoading>
+    {{ (coverUploader.progress | async)?.percentage }}%
+  </ng-template>
 
 </div>

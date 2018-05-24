@@ -1,38 +1,41 @@
 .profile-pic {
   position: relative;
   background-size: cover;
-  height: 200px;
-  width: 200px;
+  height: 100%;
+  width: 100%;
   border-radius: 50%;
   overflow: hidden;
 }
+#coverPic {
+  margin-top: -3em;
+  width: 100%;
+  height: 300px;
+  background-color: #CCD6DD;
+}
+
+.btn-orange {
+  color: white;
+  background-color: #F26624;
+  margin-left: 5px;
+  &:focus {
+    box-shadow: 0 0 0 0.2rem rgba(#F26624,.25);
+  }
+}
 
 ::ng-deep {
-  .profile-pic-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    .profile-pic-uploader {
-      .overlay-layer {
-        border-radius: 50%;
-        box-shadow: none;
-        transition: all linear 0.2s;
-      }
-      .dropzone-placeholder {
-        color: white;
-        font-weight: bold;
-        background-color: rgba(black, 0.5);
-      }
-      &:hover {
-        .overlay-layer {
-          box-shadow: inset 0 0 0 5px #1B95E0;
-        }
-      }
-    }
-    .uploader-content {
-      z-index: -1;
-      opacity: .5;
-      background: #000;
+
+  #profilePic {
+    z-index: 100;
+    margin-top: -6.5em;
+    position: absolute;
+    border-radius: 2px;
+    border: 6px solid white;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+    height: 200px;
+    width: 200px;
+    border-radius: 50%;
+    .fire-border {
+      border-radius: 50%;
     }
   }
 }

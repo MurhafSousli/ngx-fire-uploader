@@ -1,12 +1,14 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { FileItem, FileSnapshot } from '../fire-uploader';
+import { FileItem, FileSnapshot, UploaderProgress } from '../core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 import { filter } from 'rxjs/operators/filter';
 import { take } from 'rxjs/operators/take';
 import { map } from 'rxjs/operators/map';
+import { FirePhotoComponent } from '../photo';
 
-const DEFAULT_PROFILE_PIC = 'https://abs.twimg.com/sticky/default_profile_images/default_profile_400x400.png';
+const DEFAULT_PROFILE =
+  'https://abs.twimg.com/sticky/default_profile_images/default_profile_400x400.png';
 
 @Component({
   selector: 'app-profile-pic-example',
@@ -14,29 +16,30 @@ const DEFAULT_PROFILE_PIC = 'https://abs.twimg.com/sticky/default_profile_images
   styleUrls: ['./profile-pic-example.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ProfilePicExampleComponent implements OnInit {
+export class ProfilePicExampleComponent {
+  coverProgress: number;
+  disabled = true;
+  defaultProfilePhoto = DEFAULT_PROFILE;
 
-  uploadProfilePic = false;
-  process$ = new BehaviorSubject(DEFAULT_PROFILE_PIC);
-  profilePic$: Observable<any>;
-
-  ngOnInit() {
-    this.profilePic$ = this.process$.pipe(
-      map((imgURL: string) => `url(${imgURL})`)
-    );
+  onCoverProgress(e: UploaderProgress) {
+    this.coverProgress = e.percentage;
   }
 
-  onProfilePic(photos: FileItem[]) {
-    if (photos.length) {
-      photos[0].snapshot$.pipe(
-        filter((state: FileSnapshot) => !!state.thumbnail),
-        map((state: FileSnapshot) => this.process$.next(state.thumbnail)),
-        take(1)
-      ).subscribe();
-    }
+  saveChanges(
+    coverUploader: FirePhotoComponent,
+    profileUploader: FirePhotoComponent
+  ) {
+    coverUploader.start();
+    profileUploader.start();
+    this.disabled = true;
   }
 
-  reset() {
-    this.process$.next(DEFAULT_PROFILE_PIC);
+  cancel(
+    coverUploader: FirePhotoComponent,
+    profileUploader: FirePhotoComponent
+  ) {
+    coverUploader.reset();
+    profileUploader.reset();
+    this.disabled = true;
   }
 }

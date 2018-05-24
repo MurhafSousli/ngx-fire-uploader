@@ -1,0 +1,12 @@
+{
+  "$schema": "../../node_modules/ng-packagr/ng-package.schema.json",
+  "lib": {
+    "entryFile": "./src/index.ts",
+    "languageLevel": ["dom", "es2017"],
+    "externals": {
+      "firebase": "firebase",
+      "angularfire2": "angularfire2"
+    }
+  },
+  "dest": "../../build/core"
+}

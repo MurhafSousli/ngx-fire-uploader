@@ -1,55 +1,26 @@
-<fire-uploader #uploader
-               [accept]="accept"
-               [multiple]="multiple"
-               [uniqueName]="uniqueName"
-               [maxFiles]="maxFilesCount"
-               [maxFileSize]="maxFileSize"
-               [dropZone]="dropZone"
-               [placeholder]="placeholder"
-               [paramName]="paramName"
-               [paramDir]="paramDir"
-               [parallelUploads]="parallelUpload"
-               [thumbs]="thumbs"
-               [thumbWidth]="thumbWidth"
-               [thumbHeight]="thumbHeight"
-               [resizeMethod]="resizeMethod"
-               [resizeWidth]="resizeWidth"
-               [resizeHeight]="resizeHeight"
-               (files)="onFiles($event)"
-               (progress)="onProgress($event)"
-               (complete)="onComplete($event)"
-               (value)="onValue($event)"
-               (success)="onSuccess($event)"
-               (error)="onError($event)"
-               (cancel)="onCancel($event)"
-               (active)="onActiveChange($event)"
-               (remove)="onRemove($event)"
-               (reset)="onReset()">
-  <file-preview [uploader]="uploader"
-                [showDetails]="true"
-                [showProgress]="true"></file-preview>
-</fire-uploader>
+<div class="container" style="padding-left: 0; padding-right: 0;">
 
+  <fire-manager #uploader [showDetails]="true" [showProgress]="true"></fire-manager>
 
-<div class="row">
-  <div class="col">
+  <div class="row">
+    <div class="col">
 
-    <h5>Uploader Functions</h5>
+      <h5>Uploader Functions</h5>
 
-    <div class="my-3">
-      <button type="button" class="btn btn-info" (click)="uploader.select()">Add files</button>
-      <button type="button" class="btn btn-success" (click)="uploader.start()">Start</button>
-      <button type="button" class="btn btn-primary" (click)="uploader.cancel()">Cancel</button>
-      <button type="button" class="btn btn-primary" (click)="uploader.pause()">Pause</button>
-      <button type="button" class="btn btn-primary" (click)="uploader.resume()">Resume</button>
-      <button type="button" class="btn btn-danger" (click)="uploader.reset()">Reset</button>
+      <div class="my-3">
+        <button class="btn btn-info" (click)="uploader.select()">Add files</button>
+        <button class="btn btn-success" (click)="uploader.start()">Start</button>
+        <button class="btn btn-primary" (click)="uploader.cancel()">Cancel</button>
+        <button class="btn btn-primary" (click)="uploader.pause()">Pause</button>
+        <button class="btn btn-primary" (click)="uploader.resume()">Resume</button>
+        <button class="btn btn-danger" (click)="uploader.reset()">Reset</button>
+      </div>
     </div>
-  </div>
 
-  <div class="col">
-    <h5>Uploader State</h5>
+    <div class="col">
+      <h5>Uploader State</h5>
 
-    <pre>
+      <pre>
       <span>Files Count: {{ files.length }}</span>
       <span>Transfer Progress: {{ progress?.bytesTransferred | fileSize }} / {{ progress?.totalBytes | fileSize }}</span>
       <span>Transfer Percentage: {{ progress?.percentage }}%</span>
@@ -57,151 +28,141 @@
     </pre>
 
 
-    <div class="mb-5">
-      <ngb-progressbar type="primary" [value]="progress?.percentage"></ngb-progressbar>
+      <div class="mb-5">
+        <ngb-progressbar type="primary" [value]="progress?.percentage"></ngb-progressbar>
+      </div>
+
+      <p>
+        <a *ngFor="let link of links" href="{{link}}"> {{link}} </a>
+      </p>
+    </div>
+  </div>
+
+  <h5>Uploader Inputs</h5>
+
+  <div class="row">
+    <div class="col">
+
+      <div class="custom-control custom-checkbox mb-3">
+        <input type="checkbox" class="custom-control-input" id="dropZone" [(ngModel)]="dropZone">
+        <label class="custom-control-label" for="dropZone">Enable drop zone</label>
+      </div>
+
+      <div class="custom-control custom-checkbox mb-3">
+        <input type="checkbox" class="custom-control-input" id="uniqueName" [(ngModel)]="uniqueName">
+        <label class="custom-control-label" for="uniqueName">
+          Use unique name such as "{{uniqueName ? '1521317877532_' : ''}}{{paramName ? paramName : '{fileName}'}}"
+        </label>
+      </div>
+
+      <div class="custom-control custom-checkbox mb-3">
+        <input type="checkbox" class="custom-control-input" id="multiple" [(ngModel)]="multiple">
+        <label class="custom-control-label" for="multiple">Enable multiple files</label>
+      </div>
+
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="paramName">File name parameter</span>
+        </div>
+        <input type="text" class="form-control" aria-label="File name" aria-describedby="paramName" [(ngModel)]="paramName">
+      </div>
+
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="paramDir">File directory parameter</span>
+        </div>
+        <input type="text" class="form-control" aria-label="File name" aria-describedby="paramDir" [(ngModel)]="paramDir">
+      </div>
+
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="maxFilesCount">Max files count</span>
+        </div>
+        <input type="number" class="form-control" aria-label="Max Files" aria-describedby="maxFilesCount" [(ngModel)]="maxFilesCount">
+      </div>
+
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="maxFileSize">Max file</span>
+        </div>
+        <input type="number" class="form-control" aria-label="Max Files" aria-describedby="maxFileSize" [(ngModel)]="maxFileSize">
+      </div>
+
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="placeholder">Placeholder</span>
+        </div>
+        <input type="text" class="form-control" aria-label="Placeholder" aria-describedby="placeholder" [(ngModel)]="placeholder">
+      </div>
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="accept">Accept</span>
+        </div>
+        <input type="text" class="form-control" aria-label="Accept" aria-describedby="accept" [(ngModel)]="accept">
+      </div>
+
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="parallelUpload">Parallel upload</span>
+        </div>
+        <input type="number" class="form-control" aria-label="Parallel upload" aria-describedby="parallelUpload" [(ngModel)]="parallelUpload">
+      </div>
+
     </div>
 
-    <p><a *ngFor="let link of links" href="{{link}}"> {{link}} </a></p>
+    <div class="col">
+
+      <div class="custom-control custom-checkbox mb-3">
+        <input type="checkbox" class="custom-control-input" id="generateThumbnails" [(ngModel)]="thumbs">
+        <label class="custom-control-label" for="generateThumbnails">Generate thumbnails</label>
+      </div>
+
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="thumbWidth">Thumb width</span>
+        </div>
+        <input type="number" class="form-control" aria-label="Thumb width" aria-describedby="thumbWidth" [(ngModel)]="thumbWidth">
+      </div>
+
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="thumbHeight">Thumb height</span>
+        </div>
+        <input type="number" class="form-control" aria-label="Thumb height" aria-describedby="thumbHeight" [(ngModel)]="thumbHeight">
+      </div>
+
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="resizeWidth">Resize width</span>
+        </div>
+        <input type="number" class="form-control" aria-label="Resize width" aria-describedby="resizeWidth" [(ngModel)]="resizeWidth">
+      </div>
+
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="resizeHeight">Resize height</span>
+        </div>
+        <input type="number" class="form-control" aria-label="Resize height" aria-describedby="resizeHeight" [(ngModel)]="resizeHeight">
+      </div>
+
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <label class="input-group-text" for="resizeMethod">Resize Method</label>
+        </div>
+        <select class="custom-select" id="resizeMethod" [(ngModel)]="resizeMethod">
+          <option value="crop" selected="true">Crop</option>
+          <option value="contain">Contain</option>
+        </select>
+      </div>
+
+      <div class="input-group mb-3">
+        <button class="btn btn-info mr-1" (click)="accept = null">All Files</button>
+        <button class="btn btn-info mr-1" (click)="accept = 'image/*'">Only Images</button>
+        <button class="btn btn-info mr-1" (click)="accept = 'application/msword, application/pdf'">Only Word and PDF files
+        </button>
+      </div>
+
+    </div>
   </div>
+
 </div>
-
-<h5>Uploader Inputs</h5>
-
-<div class="row">
-  <div class="col">
-
-    <div class="custom-control custom-checkbox mb-3">
-      <input type="checkbox" class="custom-control-input" id="dropZone" [(ngModel)]="dropZone">
-      <label class="custom-control-label" for="dropZone">Enable drop zone</label>
-    </div>
-
-    <div class="custom-control custom-checkbox mb-3">
-      <input type="checkbox" class="custom-control-input" id="uniqueName" [(ngModel)]="uniqueName">
-      <label class="custom-control-label" for="uniqueName">
-        Use unique name such as "{{uniqueName ? '1521317877532_' : ''}}{{paramName ? paramName : '{fileName}'}}"
-      </label>
-    </div>
-
-    <div class="custom-control custom-checkbox mb-3">
-      <input type="checkbox" class="custom-control-input" id="multiple" [(ngModel)]="multiple">
-      <label class="custom-control-label" for="multiple">Enable multiple files</label>
-    </div>
-
-    <div class="input-group mb-3">
-      <div class="input-group-prepend">
-        <span class="input-group-text" id="paramName">File name parameter</span>
-      </div>
-      <input type="text" class="form-control" aria-label="File name" aria-describedby="paramName"
-             [(ngModel)]="paramName">
-    </div>
-    
-    <div class="input-group mb-3">
-      <div class="input-group-prepend">
-        <span class="input-group-text" id="paramDir">File directory parameter</span>
-      </div>
-      <input type="text" class="form-control" aria-label="File name" aria-describedby="paramDir"
-             [(ngModel)]="paramDir">
-    </div>
-
-    <div class="input-group mb-3">
-      <div class="input-group-prepend">
-        <span class="input-group-text" id="maxFilesCount">Max files count</span>
-      </div>
-      <input type="number" class="form-control" aria-label="Max Files" aria-describedby="maxFilesCount"
-             [(ngModel)]="maxFilesCount">
-    </div>
-
-    <div class="input-group mb-3">
-      <div class="input-group-prepend">
-        <span class="input-group-text" id="maxFileSize">Max file</span>
-      </div>
-      <input type="number" class="form-control" aria-label="Max Files" aria-describedby="maxFileSize"
-             [(ngModel)]="maxFileSize">
-    </div>
-
-    <div class="input-group mb-3">
-      <div class="input-group-prepend">
-        <span class="input-group-text" id="placeholder">Placeholder</span>
-      </div>
-      <input type="text" class="form-control" aria-label="Placeholder" aria-describedby="placeholder"
-             [(ngModel)]="placeholder">
-    </div>
-    <div class="input-group mb-3">
-      <div class="input-group-prepend">
-        <span class="input-group-text" id="accept">Accept</span>
-      </div>
-      <input type="text" class="form-control" aria-label="Accept" aria-describedby="accept" [(ngModel)]="accept">
-    </div>
-
-    <div class="input-group mb-3">
-      <div class="input-group-prepend">
-        <span class="input-group-text" id="parallelUpload">Parallel upload</span>
-      </div>
-      <input type="number" class="form-control" aria-label="Parallel upload" aria-describedby="parallelUpload"
-             [(ngModel)]="parallelUpload">
-    </div>
-
-  </div>
-
-  <div class="col">
-
-    <div class="custom-control custom-checkbox mb-3">
-      <input type="checkbox" class="custom-control-input" id="generateThumbnails" [(ngModel)]="thumbs">
-      <label class="custom-control-label" for="generateThumbnails">Generate thumbnails</label>
-    </div>
-
-    <div class="input-group mb-3">
-      <div class="input-group-prepend">
-        <span class="input-group-text" id="thumbWidth">Thumb width</span>
-      </div>
-      <input type="number" class="form-control" aria-label="Thumb width" aria-describedby="thumbWidth"
-             [(ngModel)]="thumbWidth">
-    </div>
-
-    <div class="input-group mb-3">
-      <div class="input-group-prepend">
-        <span class="input-group-text" id="thumbHeight">Thumb height</span>
-      </div>
-      <input type="number" class="form-control" aria-label="Thumb height" aria-describedby="thumbHeight"
-             [(ngModel)]="thumbHeight">
-    </div>
-
-    <div class="input-group mb-3">
-      <div class="input-group-prepend">
-        <span class="input-group-text" id="resizeWidth">Resize width</span>
-      </div>
-      <input type="number" class="form-control" aria-label="Resize width" aria-describedby="resizeWidth"
-             [(ngModel)]="resizeWidth">
-    </div>
-
-    <div class="input-group mb-3">
-      <div class="input-group-prepend">
-        <span class="input-group-text" id="resizeHeight">Resize height</span>
-      </div>
-      <input type="number" class="form-control" aria-label="Resize height" aria-describedby="resizeHeight"
-             [(ngModel)]="resizeHeight">
-    </div>
-
-    <div class="input-group mb-3">
-      <div class="input-group-prepend">
-        <label class="input-group-text" for="resizeMethod">Resize Method</label>
-      </div>
-      <select class="custom-select" id="resizeMethod" [(ngModel)]="resizeMethod">
-        <option value="crop" selected="true">Crop</option>
-        <option value="contain">Contain</option>
-      </select>
-    </div>
-
-    <div class="input-group mb-3">
-      <button class="btn btn-info mr-1" (click)="accept = null">All Files</button>
-      <button class="btn btn-info mr-1" (click)="accept = 'image/*'">Only Images</button>
-      <button class="btn btn-info mr-1" (click)="accept = 'application/msword, application/pdf'">Only Word and PDF
-        files
-      </button>
-    </div>
-
-  </div>
-</div>
-
-
-

@@ -1,5 +1,10 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  Output
+} from '@angular/core';
 import { FileSnapshot } from '@ngx-fire-uploader/core';
 
 @Component({
@@ -8,9 +13,7 @@ import { FileSnapshot } from '@ngx-fire-uploader/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './file-item.component.html'
 })
-
 export class FileItemComponent {
-
   @Input() snapshot: FileSnapshot;
 
   // Show fire-uploader progress bar
@@ -27,12 +30,8 @@ export class FileItemComponent {
 
   @Output() remove = new EventEmitter();
 
-  constructor(public sanitizer: DomSanitizer) {
-  }
-
   removeClicked(e: Event) {
     e.stopPropagation();
     this.remove.emit();
   }
-
 }

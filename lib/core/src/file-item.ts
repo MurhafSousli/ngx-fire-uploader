@@ -2,7 +2,7 @@ import { AngularFireUploadTask } from 'angularfire2/storage';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { isImage, resizeImage } from './utils';
 import { FileSnapshot } from './fire-uploader.model';
-import { FireUploaderComponent } from './fire-uploader.component';
+import { FireUploaderRef } from './fire-uploader-ref';
 
 export class FileItem {
 
@@ -11,7 +11,7 @@ export class FileItem {
   snapshot: FileSnapshot;
   snapshot$ = new BehaviorSubject<FileSnapshot>({});
 
-  constructor(public file: File, private _uploader: FireUploaderComponent) {
+  constructor(public file: File, private _uploader: FireUploaderRef) {
 
     this.updateSnapshot({
       name: file.name,
@@ -26,12 +26,12 @@ export class FileItem {
     });
 
     /** If file is type of image, create a thumbnail */
-    if (this._uploader.thumbs && isImage(file)) {
+    if (this._uploader.config.thumbs && isImage(file)) {
 
-      resizeImage(file, this._uploader.thumbWidth, this._uploader.thumbHeight, this._uploader.thumbnailMethod, 1)
+      resizeImage(file, this._uploader.config.thumbWidth, this._uploader.config.thumbHeight, this._uploader.config.thumbMethod, 1)
         .subscribe(
-          (blob: Blob) => this.updateSnapshot({thumbnail: URL.createObjectURL(blob)}),
-          (err: Error) => this._uploader.errorEmitter.emit(err)
+          (blob: Blob) => this.updateSnapshot({thumbnail: window.URL.createObjectURL(blob)}),
+          (err: Error) => this._uploader.error$.next(err)
         );
     }
   }
@@ -46,17 +46,17 @@ export class FileItem {
       .then((snapshot: any) => this.onTaskComplete(snapshot))
       .catch((err: Error) => {
         this.updateSnapshot({active: false});
-        this._uploader.errorEmitter.emit(err);
+        this._uploader.error$.next(err);
       });
   }
 
   delete() {
     this.snapshot.ref.delete()
       .then(() => {
-        this._uploader.removeEmitter.emit(this);
+        this._uploader.remove$.next(this);
         this.cancel();
       })
-      .catch((err) => this._uploader.errorEmitter.emit(err));
+      .catch((err) => this._uploader.error$.next(err));
   }
 
   pause() {
@@ -122,7 +122,7 @@ export class FileItem {
           totalBytes: snapshot.totalBytes
         }
       });
-      this._uploader.successEmitter.emit(this);
+      this._uploader.success$.next(this);
     }
   }
 
