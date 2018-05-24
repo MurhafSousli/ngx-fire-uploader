@@ -1,21 +1,42 @@
 import { fromPromise } from 'rxjs/observable/fromPromise';
 import { Observable } from 'rxjs/Observable';
-import { FileItem } from './file-item.class';
+import { FileItem } from './file-item';
 import { from } from 'rxjs/observable/from';
 import { of } from 'rxjs/observable/of';
 
-export function resizeImage(file: File,
-                            maxWidth: number,
-                            maxHeight: number,
-                            method: 'crop' | 'contain',
-                            quality: number): Observable<Blob> {
+/**
+ * Opens select file dialog
+ */
+export function selectFiles(
+  accept: string,
+  multiple: boolean
+): Observable<FileList> {
+  return fromPromise(
+    new Promise(resolve => {
+      const fileInput: HTMLInputElement = document.createElement('input');
+      fileInput.type = 'file';
+      fileInput.multiple = multiple;
+      fileInput.accept = accept;
+      fileInput.onchange = () => resolve(fileInput.files);
+      fileInput.click();
+    })
+  );
+}
 
+export function resizeImage(
+  file: File,
+  maxWidth: number,
+  maxHeight: number,
+  method: 'crop' | 'contain',
+  quality: number
+): Observable<Blob> {
   // Check if maxWidth or maxHeight is null
   if (!maxHeight) {
     maxHeight = maxWidth;
   } else if (!maxWidth) {
     maxWidth = maxHeight;
   }
+  console.log(maxWidth, maxHeight, method, quality);
 
   return fromPromise(
     new Promise((resolve, reject) => {
@@ -71,31 +92,6 @@ export function resizeImage(file: File,
   );
 }
 
-function dataURItoBlob(dataURI) {
-  // convert base64 to raw binary data held in a string
-  // doesn't handle URLEncoded DataURIs - see SO answer #6850276 for code that does this
-  const byteString = atob(dataURI.split(',')[1]);
-
-  // separate out the mime component
-  const mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
-
-  // write the bytes of the string to an ArrayBuffer
-  const ab = new ArrayBuffer(byteString.length);
-
-  // create a view into the buffer
-  const ia = new Uint8Array(ab);
-
-  // set the bytes of the buffer to the correct values
-  for (let i = 0; i < byteString.length; i++) {
-    ia[i] = byteString.charCodeAt(i);
-  }
-
-  // write the ArrayBuffer to a blob, and you're done
-  const blob = new Blob([ab], {type: mimeString});
-  return blob;
-
-}
-
 export function convertToMB(size: number) {
   return size / 1024 / 1024;
 }
@@ -112,14 +108,19 @@ export function parallizeUploads(files: FileItem[], parallelUploads: number) {
   return from(arr);
 }
 
-
 /**
  * Resize images if needed
  */
-export function processFile(item: FileItem, width: number, height: number, method: 'crop' | 'contain', quality: number) {
-  return (width || height) ?
-    resizeImage(item.file, width, height, method, quality) :
-    of(item);
+export function processFile(
+  item: FileItem,
+  width: number,
+  height: number,
+  method: 'crop' | 'contain',
+  quality: number
+) {
+  return width || height
+    ? resizeImage(item.file, width, height, method, quality)
+    : of(item);
 }
 
 /**

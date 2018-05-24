@@ -5,7 +5,14 @@ import { CONFIG } from './fire-manager.token';
 const defaultConfig: FireManagerConfig = {
   showProgress: true,
   showDetails: true,
-  showRemove: true
+  showRemove: true,
+  dropZone: true,
+  autoStart: false,
+  multiple: true,
+  uniqueName: true,
+  thumbMethod: 'contain',
+  thumbWidth: 100,
+  thumbHeight: 100
 };
 
 @Injectable()

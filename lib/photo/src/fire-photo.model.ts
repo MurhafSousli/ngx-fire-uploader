@@ -1,14 +1,9 @@
-export interface FireManagerConfig {
-  showProgress?: boolean;
-  showDetails?: boolean;
-  showRemove?: boolean;
-  extensions?: any;
-  dropZone?: boolean;
+export interface FirePhotoConfig {
   paramDir?: string;
   paramName?: string;
   uniqueName?: boolean;
-  multiple?: boolean;
-  accept?: string;
+  dropZone?: boolean;
+  defaultImage?: string;
   autoStart?: boolean;
   thumbWidth?: number;
   thumbHeight?: number;

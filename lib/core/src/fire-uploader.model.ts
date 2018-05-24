@@ -1,4 +1,4 @@
-import { FileItem } from './file-item.class';
+import { FileItem } from './file-item';
 
 export interface UploaderProgress {
   percentage?: number;
@@ -25,11 +25,9 @@ export interface FileSnapshot {
 }
 
 export interface FireUploaderConfig {
-  dropZone?: boolean;
   paramDir?: string;
   paramName?: string;
   uniqueName?: boolean;
-  placeholder?: string;
   multiple?: boolean;
   accept?: string;
   parallelUploads?: number;
