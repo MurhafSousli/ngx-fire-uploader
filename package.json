@@ -1,6 +1,6 @@
 {
   "name": "ngx-fire-uploader",
-  "version": "0.7.6",
+  "version": "0.8.1",
   "license": "MIT",
   "scripts": {
     "ng": "ng",
@@ -10,10 +10,11 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "sass": "node .config/styles.js",
-    "set-version": "node .config/build.js",
+    "set-version": "node .config/version.js",
     "build-core": "ng-packagr -p lib/core/ng-package.json",
     "build-manager": "ng-packagr -p lib/manager/ng-package.json",
-    "build-all": "npm run build-core && npm run build-manager && npm run sass && npm run set-version",
+    "build-photo": "ng-packagr -p lib/photo/ng-package.json",
+    "build-all": "npm run build-core && npm run build-manager && npm run build-photo && npm run sass && npm run set-version",
     "link-core": "npm link build/core && npm link @ngx-fire-uploader/core",
     "publish-all": "node .config/publish.js"
   },
@@ -45,10 +46,10 @@
     "@types/jasmine": "~2.8.3",
     "@types/jasminewd2": "~2.0.2",
     "@types/node": "~6.0.60",
+    "ansi-colors": "^2.0.1",
     "autoprefixer": "^8.5.0",
     "codelyzer": "^4.0.1",
     "cssnano": "^3.10.0",
-    "gulp-util": "^3.0.8",
     "jasmine-core": "~2.8.0",
     "jasmine-spec-reporter": "~4.2.1",
     "karma": "~2.0.0",
@@ -60,6 +61,7 @@
     "postcss": "^6.0.22",
     "postcss-strip-inline-comments": "^0.1.5",
     "protractor": "~5.1.2",
+    "replace-ext": "^1.0.0",
     "ts-node": "~4.1.0",
     "tslint": "^5.9.1",
     "typescript": "~2.5.3"
