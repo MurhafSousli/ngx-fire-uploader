@@ -3,6 +3,8 @@ import { Observable } from 'rxjs/Observable';
 import { FileItem } from './file-item';
 import { from } from 'rxjs/observable/from';
 import { of } from 'rxjs/observable/of';
+import { map } from 'rxjs/operators/map';
+import { ResizeMethod } from './fire-uploader.model';
 
 /**
  * Opens select file dialog
@@ -23,38 +25,31 @@ export function selectFiles(
   );
 }
 
-export function resizeImage(
-  file: File,
-  maxWidth: number,
-  maxHeight: number,
-  method: 'crop' | 'contain',
-  quality: number
-): Observable<Blob> {
+export function resizeImage(item: FileItem, maxWidth: number, maxHeight: number, method: ResizeMethod, quality: number): Observable<File> {
   // Check if maxWidth or maxHeight is null
   if (!maxHeight) {
     maxHeight = maxWidth;
   } else if (!maxWidth) {
     maxWidth = maxHeight;
   }
-  console.log(maxWidth, maxHeight, method, quality);
 
   return fromPromise(
     new Promise((resolve, reject) => {
       const image = new Image();
-      image.src = URL.createObjectURL(file);
+      image.src = URL.createObjectURL(item.file);
       image.onload = () => {
         const width = image.width;
         const height = image.height;
 
         if (width <= maxWidth && height <= maxHeight) {
-          resolve(file);
+          resolve(item.file);
         }
 
         let newWidth;
         let newHeight;
 
         switch (method) {
-          case 'contain':
+          case ResizeMethod.Contain:
             if (width > height) {
               newHeight = maxHeight;
               newWidth = width * (maxHeight / height);
@@ -63,7 +58,7 @@ export function resizeImage(
               newHeight = height * (maxWidth / width);
             }
             break;
-          case 'crop':
+          case ResizeMethod.Crop:
             if (width > height) {
               newHeight = height * (maxWidth / width);
               newWidth = maxWidth;
@@ -82,9 +77,9 @@ export function resizeImage(
         context.drawImage(image, 0, 0, newWidth, newHeight);
 
         if (typeof canvas.toBlob === 'function') {
-          canvas.toBlob(resolve, file.type, quality);
+          canvas.toBlob((blob: Blob) => resolve(new File([blob], item.file.name)), item.file.type, quality);
         } else {
-          resolve(canvas.msToBlob());
+          resolve(new File([canvas.msToBlob()], item.file.name));
         }
       };
       image.onerror = reject;
@@ -111,16 +106,17 @@ export function parallizeUploads(files: FileItem[], parallelUploads: number) {
 /**
  * Resize images if needed
  */
-export function processFile(
-  item: FileItem,
-  width: number,
-  height: number,
-  method: 'crop' | 'contain',
-  quality: number
-) {
-  return width || height
-    ? resizeImage(item.file, width, height, method, quality)
-    : of(item);
+export function processFile(item: FileItem, width: number, height: number, method: ResizeMethod, quality: number): Observable<FileItem> {
+  // If width or height is defined then resize the image
+  if (width || height) {
+    return resizeImage(item, width, height, method, quality).pipe(
+      map((file: File) => {
+        item.file = file;
+        return item;
+      })
+    );
+  }
+  return of(item);
 }
 
 /**

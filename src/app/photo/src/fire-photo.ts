@@ -1,4 +1,5 @@
 import { Inject, Injectable, Optional } from '@angular/core';
+import { ResizeMethod } from '../../core/src';
 import { FirePhotoConfig } from './fire-photo.model';
 import { CONFIG } from './fire-photo.token';
 
@@ -7,8 +8,8 @@ const defaultConfig: FirePhotoConfig = {
   uniqueName: true,
   defaultImage: null,
   autoStart: false,
-  thumbMethod: 'contain',
-  resizeMethod: 'crop'
+  thumbMethod: ResizeMethod.Contain,
+  resizeMethod: ResizeMethod.Crop
 };
 
 @Injectable()
