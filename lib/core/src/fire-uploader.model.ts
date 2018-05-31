@@ -37,10 +37,14 @@ export interface FireUploaderConfig {
   thumbs?: boolean;
   thumbWidth?: number;
   thumbHeight?: number;
-  thumbMethod?: 'crop' | 'contain';
-  resizeMethod?: 'crop' | 'contain';
+  thumbMethod?: ResizeMethod;
+  resizeMethod?: ResizeMethod;
   resizeWidth?: number;
   resizeHeight?: number;
   resizeMimeType?: string;
   resizeQuality?: number;
+}
+export enum ResizeMethod {
+  Crop = 'crop',
+  Contain = 'contain'
 }
