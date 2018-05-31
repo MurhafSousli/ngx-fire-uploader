@@ -9,18 +9,13 @@ import { FileItem } from './file-item';
 
 @Injectable()
 export class FireUploader {
-  /** Stores FireUploaderRef instances */
+  // Stores FireUploaderRef instances
   private readonly _instances = {};
 
-  /** Global config */
+  // Global config
   config: FireUploaderConfig;
 
-  constructor(
-    @Optional()
-    @Inject(UPLOADER_CONFIG)
-    config: FireUploaderConfig,
-    private _storage: AngularFireStorage
-  ) {
+  constructor(@Optional() @Inject(UPLOADER_CONFIG)config: FireUploaderConfig, private _storage: AngularFireStorage) {
     this.config = { ...DEFAULT_CONFIG, ...config };
   }
 

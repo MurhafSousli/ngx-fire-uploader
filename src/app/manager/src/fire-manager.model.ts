@@ -1,3 +1,5 @@
+import { ResizeMethod } from '../../core/src';
+
 export interface FireManagerConfig {
   showProgress?: boolean;
   showDetails?: boolean;
@@ -12,8 +14,8 @@ export interface FireManagerConfig {
   autoStart?: boolean;
   thumbWidth?: number;
   thumbHeight?: number;
-  thumbMethod?: 'crop' | 'contain';
-  resizeMethod?: 'crop' | 'contain';
+  thumbMethod?: ResizeMethod;
+  resizeMethod?: ResizeMethod;
   resizeWidth?: number;
   resizeHeight?: number;
   resizeMimeType?: string;

@@ -1,4 +1,5 @@
 import { Inject, Injectable, Optional } from '@angular/core';
+import { ResizeMethod } from '@ngx-fire-uploader/core';
 import { FireManagerConfig } from './fire-manager.model';
 import { CONFIG } from './fire-manager.token';
 
@@ -10,7 +11,7 @@ const defaultConfig: FireManagerConfig = {
   autoStart: false,
   multiple: true,
   uniqueName: true,
-  thumbMethod: 'contain',
+  thumbMethod: ResizeMethod.Contain,
   thumbWidth: 100,
   thumbHeight: 100
 };

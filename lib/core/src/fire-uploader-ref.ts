@@ -2,7 +2,6 @@ import { UploaderState, FireUploaderConfig, UploaderProgress } from './fire-uplo
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Subject } from 'rxjs/Subject';
 import { FileItem } from './file-item';
-import { FireUploader } from './fire-uploader';
 import { processFile, parallizeUploads, maxFilesError, maxFileSizeError, convertToMB, selectFiles } from './utils';
 import { AngularFireStorage } from 'angularfire2/storage';
 
@@ -37,11 +36,11 @@ export class FireUploaderRef {
   private _cancelUpload$ = new Subject();
 
   files$ = new Subject<FileItem[]>();
-  remove$ = new Subject();
+  remove$ = new Subject<FileItem>();
   success$ = new Subject<FileItem>();
   complete$ = new Subject<FileItem[]>();
   value$ = new Subject<string[]>();
-  error$ = new Subject();
+  error$ = new Subject<any>();
   active$ = new Subject<boolean>();
   progress$ = new Subject<UploaderProgress>();
   reset$ = new Subject();
@@ -142,16 +141,16 @@ export class FireUploaderRef {
    */
   addFiles(fileList: FileList) {
     this.validateFiles(fileList)
-      .then((files: FileItem[]) => {
-        this.setState({files});
-        this.files$.next(files);
-        this.updateRootState$.next(null);
+    .then((files: FileItem[]) => {
+      this.setState({files});
+      this.files$.next(files);
+      this.updateRootState$.next(null);
 
-        // Starts uploading as soon as the file are added
-        if (this.config.autoStart) {
-          this.start();
-        }
-      });
+      // Starts uploading as soon as the file are added
+      if (this.config.autoStart) {
+        this.start();
+      }
+    });
   }
 
   /**
@@ -188,8 +187,8 @@ export class FireUploaderRef {
     this.reset$.next();
   }
 
-  cancelFile(file: FileItem) {
-    file.cancel();
+  cancelFile(item: FileItem) {
+    item.cancel();
     this.updateRootState$.next(null);
   }
 
@@ -233,7 +232,7 @@ export class FireUploaderRef {
    * Prevents duplication
    */
   private validateFiles(fileList: FileList): Promise<FileItem[]> {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       let files: FileItem[] = [];
       if (fileList.length) {
         let length: number;
@@ -272,7 +271,6 @@ export class FireUploaderRef {
       }
       // If user didn't select file
       resolve(this._state.files);
-      // return this._state.files;
     });
   }
 
@@ -289,7 +287,6 @@ export class FireUploaderRef {
       const fileName = this.config.paramName || item.snapshot.name;
 
       const path = dirName + prefixName + fileName;
-
       const task = this._storage.upload(path, item.file);
       return item.assignTask(task);
     });

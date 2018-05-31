@@ -1,13 +1,14 @@
 import { AngularFireUploadTask } from 'angularfire2/storage';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { isImage, resizeImage } from './utils';
 import { FileSnapshot } from './fire-uploader.model';
 import { FireUploaderRef } from './fire-uploader-ref';
+import { isImage, resizeImage } from './utils';
 
 export class FileItem {
 
   private _task: AngularFireUploadTask;
 
+  // File state
   snapshot: FileSnapshot;
   snapshot$ = new BehaviorSubject<FileSnapshot>({});
 
@@ -25,10 +26,10 @@ export class FileItem {
       }
     });
 
-    /** If file is type of image, create a thumbnail */
+    // If file is type of image, create a thumbnail
     if (this._uploader.config.thumbs && isImage(file)) {
 
-      resizeImage(file, this._uploader.config.thumbWidth, this._uploader.config.thumbHeight, this._uploader.config.thumbMethod, 1)
+      resizeImage(this, this._uploader.config.thumbWidth, this._uploader.config.thumbHeight, this._uploader.config.thumbMethod, 1)
         .subscribe(
           (blob: Blob) => this.updateSnapshot({thumbnail: window.URL.createObjectURL(blob)}),
           (err: Error) => this._uploader.error$.next(err)
@@ -39,8 +40,7 @@ export class FileItem {
   assignTask(task: AngularFireUploadTask): Promise<any> {
     this._task = task;
 
-    this._task.snapshotChanges()
-      .subscribe((snapshot: any) => this.onSnapshotChanges(snapshot));
+    this._task.snapshotChanges().subscribe((snapshot: any) => this.onSnapshotChanges(snapshot));
 
     return this._task
       .then((snapshot: any) => this.onTaskComplete(snapshot))
@@ -51,12 +51,10 @@ export class FileItem {
   }
 
   delete() {
-    this.snapshot.ref.delete()
-      .then(() => {
-        this._uploader.remove$.next(this);
-        this.cancel();
-      })
-      .catch((err) => this._uploader.error$.next(err));
+    this.snapshot.ref.delete().then(() => {
+      this._uploader.remove$.next(this);
+      this.cancel();
+    }).catch((err: any) => this._uploader.error$.next(err));
   }
 
   pause() {

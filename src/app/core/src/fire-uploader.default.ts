@@ -1,4 +1,4 @@
-import { FireUploaderConfig } from './fire-uploader.model';
+import { FireUploaderConfig, ResizeMethod } from './fire-uploader.model';
 
 export const DEFAULT_CONFIG: FireUploaderConfig = {
   paramName: null,
@@ -10,10 +10,10 @@ export const DEFAULT_CONFIG: FireUploaderConfig = {
   maxFiles: 20,
   autoStart: false,
   thumbs: true,
-  thumbMethod: 'contain',
+  thumbMethod: ResizeMethod.Contain,
   thumbWidth: 100,
   thumbHeight: 100,
-  resizeMethod: 'crop',
+  resizeMethod: ResizeMethod.Crop,
   resizeWidth: null,
   resizeHeight: null,
   resizeMimeType: null,

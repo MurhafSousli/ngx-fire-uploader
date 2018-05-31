@@ -1,3 +1,5 @@
+import { ResizeMethod } from '@ngx-fire-uploader/core';
+
 export interface FirePhotoConfig {
   paramDir?: string;
   paramName?: string;
@@ -7,8 +9,8 @@ export interface FirePhotoConfig {
   autoStart?: boolean;
   thumbWidth?: number;
   thumbHeight?: number;
-  thumbMethod?: 'crop' | 'contain';
-  resizeMethod?: 'crop' | 'contain';
+  thumbMethod?: ResizeMethod;
+  resizeMethod?: ResizeMethod;
   resizeWidth?: number;
   resizeHeight?: number;
   resizeMimeType?: string;
