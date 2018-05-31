@@ -1,19 +1,5 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  Input,
-  OnInit,
-  Output,
-  HostBinding,
-  OnChanges
-} from '@angular/core';
-import {
-  FireUploader,
-  FireUploaderRef,
-  FileItem,
-  FileSnapshot
-} from '@ngx-fire-uploader/core';
+import { Component, Input, OnInit, Output, HostBinding, OnChanges, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
+import { FireUploader, FireUploaderRef, FileItem, ResizeMethod } from '@ngx-fire-uploader/core';
 import { FireManager } from './fire-manager';
 
 @Component({
@@ -34,8 +20,8 @@ export class FireManagerComponent implements OnInit, OnChanges {
   @Input() autoStart: boolean = this._manager.config.autoStart;
   @Input() thumbWidth: number = this._manager.config.thumbWidth;
   @Input() thumbHeight: number = this._manager.config.thumbHeight;
-  @Input() thumbMethod: 'crop' | 'contain' = this._manager.config.thumbMethod;
-  @Input() resizeMethod: 'crop' | 'contain' = this._manager.config.resizeMethod;
+  @Input() thumbMethod: ResizeMethod = this._manager.config.thumbMethod;
+  @Input() resizeMethod: ResizeMethod = this._manager.config.resizeMethod;
   @Input() resizeWidth: number = this._manager.config.resizeWidth;
   @Input() resizeHeight: number = this._manager.config.resizeHeight;
   @Input() resizeMimeType: string = this._manager.config.resizeMimeType;
