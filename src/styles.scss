@@ -3,8 +3,8 @@
 @import url('https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css');
 @import url('https://cdnjs.cloudflare.com/ajax/libs/open-iconic/1.1.1/font/css/open-iconic-bootstrap.min.css');
 
-// @import 'app/core/src/fire-uploader';
-@import 'app/manager/src/fire-manager';
+@import 'app/fire-uploader/manager/fire-manager';
+//@import '~@ngx-fire-uploader/manager/fire-manager';
 
 
 html {

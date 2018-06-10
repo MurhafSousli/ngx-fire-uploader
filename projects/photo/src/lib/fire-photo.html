@@ -1,0 +1,31 @@
+<ng-container *ngIf="state$ | async; let state">
+  <div class="fire-photo"
+       [lazyImage]="state?.photo"
+       [class.fire-disabled]="disabled"
+       (loading)="updateState({loading: $event})"
+       (mouseenter)="hover = true"
+       (mouseleave)="hover = false">
+
+    <div *ngIf="dropZone && !state.loading && !disabled"
+         class="fire-dropzone"
+         (dropZone)="uploaderRef.addFiles($event)"
+         (dragOver)="hover=$event"
+         (click)="select()">
+    </div>
+
+    <div *ngIf="!disabled" class="fire-border" [class.fire-photo-hover]="hover"></div>
+
+    <ng-template [ngIf]="state.loading">
+      <div class="fire-loading">
+        <ng-container *ngTemplateOutlet="loadingTemplate"></ng-container>
+        <div *ngIf="!loadingTemplate" class="fire-spinner"></div>
+      </div>
+    </ng-template>
+
+    <ng-template [ngIf]="!state.loading && !disabled">
+      <div class="fire-placeholder">
+        <ng-content></ng-content>
+      </div>
+    </ng-template>
+  </div>
+</ng-container>

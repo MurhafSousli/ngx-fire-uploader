@@ -11,7 +11,8 @@ import { AngularFireModule } from 'angularfire2';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { AngularFireStorageModule } from 'angularfire2/storage';
 
-import { FireUploaderModule } from './core';
+// import { FireUploaderModule } from '@ngx-fire-uploader/core';
+import { FireUploaderModule } from './fire-uploader/core/fire-uploader.module';
 
 import { AppComponent } from './app.component';
 import { environment } from '../environments/environment';

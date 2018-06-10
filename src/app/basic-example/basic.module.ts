@@ -7,8 +7,8 @@ import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap/collapse/collapse.
 import { NgbProgressbarModule } from '@ng-bootstrap/ng-bootstrap/progressbar/progressbar.module';
 import { SimpleNotificationsModule } from 'angular2-notifications';
 
-// import { FireUploaderModule } from '../core';
-import { FireManagerModule } from '../manager';
+// import { FireManagerModule } from '@ngx-fire-uploader/manager';
+import { FireManagerModule } from '../fire-uploader/manager/fire-manager.module';
 
 import { BasicExampleComponent } from './basic-example.component';
 
@@ -21,14 +21,11 @@ import { BasicExampleComponent } from './basic-example.component';
     NgbCollapseModule,
     NgbProgressbarModule,
     SimpleNotificationsModule,
-    // FireUploaderModule,
     FireManagerModule.forRoot({
       extensions: {
         pdf: 'url("assets/pdf.svg")',
         doc: '#335599'
-      },
-      thumbHeight: 100,
-      thumbWidth: 100
+      }
     }),
     RouterModule.forChild([
       {

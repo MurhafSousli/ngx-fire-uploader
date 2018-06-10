@@ -1,11 +1,11 @@
 <div class="profile-pic-container">
 
-  <fire-photo #coverUploader id="coverPic" [disabled]="disabled" [loadingTemplate]="coverLoading" [resizeWidth]="500" (progress)="onCoverProgress($event)">
+  <fire-photo #coverUploader id="coverPic" [disabled]="disabled" [resizeWidth]="500" (progress)="onCoverProgress($event)" (complete)="onComplete($event)">
     Upload Cover Photo
   </fire-photo>
 
   <div class="container">
-    <fire-photo #profileUploader id="profilePic" [src]="test | async" [disabled]="disabled" [thumbHeight]="200" [thumbWidth]="200">
+    <fire-photo #profileUploader id="profilePic" [src]="defaultProfilePhoto" [disabled]="disabled" [thumbHeight]="200" [thumbWidth]="200">
       Upload Profile Photo
     </fire-photo>
 
@@ -25,8 +25,8 @@
 
   </div>
 
-  <ng-template #coverLoading>
+  <!-- <ng-template #coverLoading>
     {{ (coverUploader.progress | async)?.percentage }}%
-  </ng-template>
+  </ng-template> -->
 
 </div>

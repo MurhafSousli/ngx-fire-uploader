@@ -1,0 +1,25 @@
+<ng-container *ngIf="uploaderRef.state$ | async; let state">
+
+  <file-item *ngFor="let file of state.files"
+             [style.height.px]="thumbWidth"
+             [style.width.px]="thumbHeight"
+             [state]="file.state$ | async"
+             [showDetails]="showDetails"
+             [showProgress]="showProgress"
+             [showRemove]="showRemove"
+             [extensions]="extensions"
+             (click)="itemClicked($event, file)"
+             (remove)="uploaderRef.removeItem(file)">>
+  </file-item>
+
+  <div *ngIf="dropZone" class="dropzone"
+       (dropZone)="uploaderRef.addFiles($event)"
+       (click)="uploaderRef.select()"
+       (dragOver)="hoverClass=$event">
+
+    <div class="overlay-layer"></div>
+    <div *ngIf="!state.files.length" class="dropzone-placeholder">
+      Drop files here or click to select
+    </div>
+  </div>
+</ng-container>

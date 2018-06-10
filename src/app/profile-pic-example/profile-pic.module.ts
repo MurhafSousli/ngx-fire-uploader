@@ -2,8 +2,8 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
-import { FireUploaderModule } from '../core';
-import { FirePhotoModule } from '../photo';
+// import { FirePhotoModule } from '@ngx-fire-uploader/photo';
+import { FirePhotoModule } from '../fire-uploader/photo';
 
 import { ProfilePicExampleComponent } from './profile-pic-example.component';
 

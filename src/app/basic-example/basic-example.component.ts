@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { NotificationsService } from 'angular2-notifications';
-import { FileItem, UploaderProgress } from '../core';
+// import { FileItem, UploaderProgress } from '@ngx-fire-uploader/core';
+import { FileItem, FireUploaderProgress, ResizeMethod } from '../fire-uploader/core';
 
 @Component({
   selector: 'app-basic-example',
@@ -12,7 +13,7 @@ export class BasicExampleComponent {
 
   files = [];
   links = [];
-  progress: UploaderProgress;
+  progress: FireUploaderProgress;
   active = false;
 
   notifOptions = {
@@ -32,13 +33,13 @@ export class BasicExampleComponent {
   paramDir;
   placeholder = 'Drop files here or click to select';
   accept = null;
-  parallelUpload = 1;
+  parallelUploads = 1;
   thumbs = true;
-  thumbWidth = 150;
-  thumbHeight = 150;
+  thumbWidth = 100;
+  thumbHeight = 100;
   resizeWidth;
   resizeHeight;
-  resizeMethod;
+  resizeMethod = ResizeMethod.Crop;
 
   constructor(private notifications: NotificationsService) {
   }
@@ -48,13 +49,11 @@ export class BasicExampleComponent {
   }
 
   onSuccess(e: FileItem) {
-    this.notifications.success('File uploaded successfully!', e.snapshot.name, this.notifOptions);
-    console.log('success', e);
+    this.notifications.success('File uploaded successfully!', e.state.name, this.notifOptions);
   }
 
   onComplete(e) {
     this.links = e.map(file => file.downloadURL);
-    console.log('complete', e);
     this.notifications.info('Operation finished!', `${this.links.length} files has been uploaded`, this.notifOptions);
   }
 
@@ -63,11 +62,11 @@ export class BasicExampleComponent {
   }
 
   onRemove(e: FileItem) {
-    this.notifications.info('File removed!', e.snapshot.name, this.notifOptions);
+    this.notifications.info('File removed!', e.state.name, this.notifOptions);
   }
 
   onCancel(e: FileItem) {
-    this.notifications.info('Upload cancelled!', e.snapshot.name, this.notifOptions);
+    this.notifications.info('Upload cancelled!', e.state.name, this.notifOptions);
   }
 
   onError(e) {
@@ -82,7 +81,7 @@ export class BasicExampleComponent {
     console.log('value', e);
   }
 
-  onActiveChange(e) {
+  onActive(e) {
     this.active = e;
   }
 

@@ -1,6 +1,34 @@
 <div class="container" style="padding-left: 0; padding-right: 0;">
 
-  <fire-manager #uploader [showDetails]="true" [showProgress]="true"></fire-manager>
+  <fire-manager #uploader
+                [showDetails]="true"
+                [showProgress]="true"
+                [uniqueName]="uniqueName"
+                [dropZone]="dropZone"
+                [multiple]="multiple"
+                [paramDir]="paramDir"
+                [paramName]="paramName"
+                [accept]="accept"
+                [parallelUploads]="parallelUploads"
+                [thumbs]="thumbs"
+                [maxFilesCount]="maxFilesCount"
+                [maxFileSize]="maxFilesCount"
+                [thumbWidth]="thumbWidth"
+                [thumbHeight]="thumbHeight"
+                [resizeWidth]="resizeWidth"
+                [resizeHeight]="resizeHeight"
+                [resizeMethod]="resizeMethod"
+                (files)="onFiles($event)"
+                (progress)="onProgress($event)"
+                (active)="onActive($event)"
+                (value)="onValue($event)"
+                (remove)="onRemove($event)"
+                (cancel)="onCancel($event)"
+                (reset)="onReset()"
+                (success)="onSuccess($event)"
+                (complete)="onComplete($event)"
+                (error)="onError($event)"
+  ></fire-manager>
 
   <div class="row">
     <div class="col">
@@ -103,9 +131,9 @@
 
       <div class="input-group mb-3">
         <div class="input-group-prepend">
-          <span class="input-group-text" id="parallelUpload">Parallel upload</span>
+          <span class="input-group-text" id="parallelUploads">Parallel upload</span>
         </div>
-        <input type="number" class="form-control" aria-label="Parallel upload" aria-describedby="parallelUpload" [(ngModel)]="parallelUpload">
+        <input type="number" class="form-control" aria-label="Parallel upload" aria-describedby="parallelUploads" [(ngModel)]="parallelUploads">
       </div>
 
     </div>
