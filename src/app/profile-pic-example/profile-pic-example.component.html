@@ -1,6 +1,10 @@
 <div class="profile-pic-container">
 
-  <fire-photo #coverUploader id="coverPic" [disabled]="disabled" [resizeWidth]="500" (progress)="onCoverProgress($event)" (complete)="onComplete($event)">
+  <fire-photo #coverUploader id="coverPic" [disabled]="disabled" [resizeWidth]="500"
+              [uniqueName]="false"
+              [paramDir]="'xx'"
+              [paramName]="'zz.jpg'"
+              (progress)="onCoverProgress($event)" (complete)="onComplete($event)">
     Upload Cover Photo
   </fire-photo>
 

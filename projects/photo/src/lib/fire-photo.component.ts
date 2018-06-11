@@ -85,6 +85,9 @@ export class FirePhotoComponent implements OnInit, OnChanges, OnDestroy {
     this.uploaderRef = this._uploader.ref(this.id, {
       multiple: false,
       accept: 'image/*',
+      paramName: this.paramName,
+      paramDir: this.paramDir,
+      uniqueName: this.uniqueName,
       autoStart: this.autoStart,
       thumbWidth: this.thumbWidth,
       thumbHeight: this.thumbHeight,
@@ -160,6 +163,9 @@ export class FirePhotoComponent implements OnInit, OnChanges, OnDestroy {
     if (this.uploaderRef instanceof FireUploaderRef) {
       // Update uploader's config when inputs change
       this.uploaderRef.setConfig({
+        paramName: this.paramName,
+        paramDir: this.paramDir,
+        uniqueName: this.uniqueName,
         autoStart: this.autoStart,
         thumbWidth: this.thumbWidth,
         thumbHeight: this.thumbHeight,
