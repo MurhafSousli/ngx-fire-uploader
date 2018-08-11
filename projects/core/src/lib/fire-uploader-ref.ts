@@ -1,5 +1,5 @@
 import { AngularFireStorage } from 'angularfire2/storage';
-import { Observable, Subject, BehaviorSubject, of, forkJoin, EMPTY, fromEvent, Subscription } from 'rxjs';
+import { Observable, Subject, BehaviorSubject, Subscription, of, forkJoin, fromEvent, EMPTY } from 'rxjs';
 import { switchMap, concatMap, takeUntil, finalize, tap, catchError, distinctUntilChanged, map } from 'rxjs/operators';
 import { FireUploaderState, FireUploaderConfig, FireUploaderProgress } from './fire-uploader.model';
 import { DEFAULT_STATE } from './fire-uploader.default';
@@ -65,8 +65,7 @@ export class FireUploaderRef {
     // Prepare the file input
     this._fileInput = document.createElement('input');
     this._fileInput.type = 'file';
-    this._inputSelect$ = fromEvent(this._fileInput, 'change')
-      .subscribe(() => this.addFiles(this._fileInput.files));
+    this._inputSelect$ = fromEvent(this._fileInput, 'change').subscribe(() => this.addFiles(this._fileInput.files));
 
     this._refreshState$.pipe(
       switchMap(() => {

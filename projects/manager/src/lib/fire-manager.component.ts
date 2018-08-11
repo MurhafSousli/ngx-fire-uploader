@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, Output, HostBinding, OnChanges, OnDestroy, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { FireUploader, FireUploaderRef, FileItem, ResizeMethod, FireUploaderProgress } from '@ngx-fire-uploader/core';
-import { FireManager } from './fire-manager';
+import { FireManager } from './fire-manager.service';
 
 @Component({
   selector: 'fire-manager',
@@ -28,7 +28,6 @@ export class FireManagerComponent implements OnInit, OnChanges, OnDestroy {
   @Input() resizeMethod: ResizeMethod = this._manager.config.resizeMethod;
   @Input() resizeWidth: number = this._manager.config.resizeWidth;
   @Input() resizeHeight: number = this._manager.config.resizeHeight;
-  @Input() resizeMimeType: string = this._manager.config.resizeMimeType;
   @Input() resizeQuality: number = this._manager.config.resizeQuality;
 
   // Reference to the uploader
@@ -63,8 +62,8 @@ export class FireManagerComponent implements OnInit, OnChanges, OnDestroy {
   constructor(private _uploader: FireUploader, private _manager: FireManager) {
   }
 
-  ngOnInit() {
-    this.uploaderRef = this._uploader.ref(this.id, {
+  private getConfig() {
+    return {
       paramName: this.paramName,
       paramDir: this.paramDir,
       uniqueName: this.uniqueName,
@@ -81,9 +80,12 @@ export class FireManagerComponent implements OnInit, OnChanges, OnDestroy {
       resizeHeight: this.resizeHeight,
       resizeMethod: this.resizeMethod,
       resizeWidth: this.resizeWidth,
-      resizeMimeType: this.resizeMimeType,
       resizeQuality: this.resizeQuality
-    });
+    };
+  }
+
+  ngOnInit() {
+    this.uploaderRef = this._uploader.ref(this.id, this.getConfig());
 
     this.uploaderRef.success$.subscribe((file: FileItem) => this.success.emit(file));
     this.uploaderRef.progress$.subscribe((progress: FireUploaderProgress) => this.progress.emit(progress));
@@ -103,26 +105,7 @@ export class FireManagerComponent implements OnInit, OnChanges, OnDestroy {
   ngOnChanges() {
     if (this.uploaderRef instanceof FireUploaderRef) {
       // Update uploader's config when inputs change
-      this.uploaderRef.setConfig({
-        paramName: this.paramName,
-        paramDir: this.paramDir,
-        uniqueName: this.uniqueName,
-        maxFiles: this.maxFilesCount,
-        maxFileSize: this.maxFilesCount,
-        parallelUploads: this.parallelUploads,
-        multiple: this.multiple,
-        accept: this.accept,
-        autoStart: this.autoStart,
-        thumbs: this.thumbs,
-        thumbWidth: this.thumbWidth,
-        thumbHeight: this.thumbHeight,
-        thumbMethod: this.thumbMethod,
-        resizeHeight: this.resizeHeight,
-        resizeMethod: this.resizeMethod,
-        resizeWidth: this.resizeWidth,
-        resizeMimeType: this.resizeMimeType,
-        resizeQuality: this.resizeQuality
-      });
+      this.uploaderRef.setConfig(this.getConfig());
     }
   }
 

@@ -13,7 +13,6 @@ export interface FirePhotoConfig {
   resizeMethod?: ResizeMethod;
   resizeWidth?: number;
   resizeHeight?: number;
-  resizeMimeType?: string;
   resizeQuality?: number;
   maxFileSize?: number;
 }

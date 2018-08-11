@@ -1,7 +1,7 @@
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { AngularFireStorageModule, AngularFireStorage } from 'angularfire2/storage';
 
-import { FireUploader } from './fire-uploader';
+import { FireUploader } from './fire-uploader.service';
 import { FireUploaderConfig } from './fire-uploader.model';
 import { UPLOADER_CONFIG } from './fire-uploader.token';
 import { DropZoneDirective } from './drop-zone.directive';

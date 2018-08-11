@@ -17,7 +17,6 @@ export const DEFAULT_CONFIG: FireUploaderConfig = {
   resizeMethod: ResizeMethod.Crop,
   resizeWidth: null,
   resizeHeight: null,
-  resizeMimeType: null,
   resizeQuality: 1
 };
 

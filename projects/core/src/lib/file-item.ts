@@ -4,10 +4,10 @@ import { BehaviorSubject, Observable, from, of } from 'rxjs';
 import { filter, switchMap, take, tap } from 'rxjs/operators';
 import { FileState, FireUploaderConfig } from './fire-uploader.model';
 import { isImage } from './utils';
-import { resizeImage } from './resizer';
+import { resizeImage } from './image-resizer';
 
 /**
- * FileItem class for each file added in the queue
+ * FileItem class for each file in the uploader queue
  */
 export class FileItem {
 
@@ -19,6 +19,7 @@ export class FileItem {
 
   /** File upload task ref */
   private _task: AngularFireUploadTask;
+
   /** FileItem state */
   state: FileState = {
     active: false,
@@ -29,12 +30,14 @@ export class FileItem {
       totalBytes: 0
     }
   };
+
   /** Stream that emits FileItem state */
   state$ = new BehaviorSubject<FileState>(this.state);
 
   /** Creates FileItem class for each file added to uploader queue */
   constructor(public file: File, public config: FireUploaderConfig, private _storage: AngularFireStorage) {
 
+    // Initialize file item state
     this.updateState({
       name: file.name,
       type: file.type,
@@ -45,15 +48,21 @@ export class FileItem {
         totalBytes: file.size
       }
     });
+
+    // Set directory name where the file should be stored in the fire cloud
     const dirName = this.config.paramDir ? `${this.config.paramDir}/` : '';
+
+    // Set a prefix to the file name, useful to avoid overriding an existing file
     const prefixName = this.config.uniqueName ? `${new Date().getTime()}_` : '';
+
+    // Set file name to either a custom name or the original file name
     const fileName = this.config.paramName || file.name;
 
     this._path = dirName + prefixName + fileName;
     this._ref = this._storage.ref(this._path);
   }
 
-  /** Prepare file (image file) */
+  /** Prepare file, functions to be executed when a file is added (Used for image files) */
   prepare(): Observable<any> {
     return of({}).pipe(
       // Check if file type is image

@@ -10,18 +10,19 @@ import { FileState } from '@ngx-fire-uploader/core';
 export class FileItemComponent {
   @Input() state: FileState;
 
-  // Show fire-uploader progress bar
+  /** Show fire-uploader progress bar */
   @Input() showProgress: boolean;
 
-  // Shows file name and size
+  /** Shows file name and size */
   @Input() showDetails: boolean;
 
-  // Shows remove button
+  /** Shows remove button */
   @Input() showRemove: boolean;
 
-  // To set background based on file extension
+  /** To set background based on file extension */
   @Input() extensions: any;
 
+  /** Stream that emits when remove button is clicked */
   @Output() remove = new EventEmitter();
 
   removeClicked(e: Event) {
