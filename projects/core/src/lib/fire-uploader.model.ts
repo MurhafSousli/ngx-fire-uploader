@@ -75,8 +75,6 @@ export interface FireUploaderConfig {
   /** Image new height in px. */
   resizeHeight?: number;
   /** Quality of re-sized image between 0 and 1 (not on Edge). */
-  resizeMimeType?: string;
-  /** The mime type of the resized image e.g. image/jpeg. */
   resizeQuality?: number;
 }
 

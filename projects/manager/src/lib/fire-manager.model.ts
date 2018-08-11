@@ -22,6 +22,5 @@ export interface FireManagerConfig {
   resizeMethod?: ResizeMethod;
   resizeWidth?: number;
   resizeHeight?: number;
-  resizeMimeType?: string;
   resizeQuality?: number;
 }

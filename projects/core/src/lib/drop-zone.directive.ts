@@ -1,6 +1,6 @@
 import { Directive, EventEmitter, HostListener, Output } from '@angular/core';
 /**
- * Convert element to a drop zone to add files to uploader queue
+ * Create a drop zone that adds files to the uploader queue
  */
 @Directive({
   selector: '[dropZone]'

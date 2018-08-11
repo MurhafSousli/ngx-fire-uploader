@@ -7,7 +7,7 @@ import { FireManagerComponent } from './fire-manager.component';
 import { FileSizePipe } from './file-size.pipe';
 import { SafeStylePipe } from './safe-style.pipe';
 import { FireManagerConfig } from './fire-manager.model';
-import { FireManager } from './fire-manager';
+import { FireManager } from './fire-manager.service';
 import { CONFIG } from './fire-manager.token';
 
 export function previewerFactory(config: FireManagerConfig) {

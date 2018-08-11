@@ -14,7 +14,7 @@ import {
 import { FileState, FireUploaderProgress, FileItem, FireUploaderRef, FireUploader, ResizeMethod } from '@ngx-fire-uploader/core';
 import { BehaviorSubject } from 'rxjs';
 import { tap, map, switchMap, take, filter } from 'rxjs/operators';
-import { FirePhoto } from './fire-photo';
+import { FirePhoto } from './fire-photo.service';
 
 export interface FirePhotoState {
   loading?: boolean;
@@ -24,7 +24,6 @@ export interface FirePhotoState {
 
 @Component({
   selector: 'fire-photo',
-  preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['./fire-photo.scss'],
   templateUrl: './fire-photo.html'
@@ -59,7 +58,6 @@ export class FirePhotoComponent implements OnInit, OnChanges, OnDestroy {
   @Input() resizeMethod: ResizeMethod = this._manager.config.resizeMethod;
   @Input() resizeWidth: number = this._manager.config.resizeWidth;
   @Input() resizeHeight: number = this._manager.config.resizeHeight;
-  @Input() resizeMimeType: string = this._manager.config.resizeMimeType;
   @Input() resizeQuality: number = this._manager.config.resizeQuality;
 
   // UploaderRef events
@@ -95,7 +93,6 @@ export class FirePhotoComponent implements OnInit, OnChanges, OnDestroy {
       resizeHeight: this.resizeHeight,
       resizeMethod: this.resizeMethod,
       resizeWidth: this.resizeWidth,
-      resizeMimeType: this.resizeMimeType,
       resizeQuality: this.resizeQuality
     });
 
@@ -173,7 +170,6 @@ export class FirePhotoComponent implements OnInit, OnChanges, OnDestroy {
         resizeHeight: this.resizeHeight,
         resizeMethod: this.resizeMethod,
         resizeWidth: this.resizeWidth,
-        resizeMimeType: this.resizeMimeType,
         resizeQuality: this.resizeQuality
       });
     }
