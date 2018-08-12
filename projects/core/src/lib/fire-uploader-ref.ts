@@ -1,5 +1,5 @@
 import { AngularFireStorage } from 'angularfire2/storage';
-import { Observable, Subject, BehaviorSubject, Subscription, of, forkJoin, fromEvent, EMPTY } from 'rxjs';
+import { Observable, Subject, BehaviorSubject, Subscription, of, forkJoin, fromEvent, EMPTY, SubscriptionLike } from 'rxjs';
 import { switchMap, concatMap, takeUntil, finalize, tap, catchError, distinctUntilChanged, map } from 'rxjs/operators';
 import { FireUploaderState, FireUploaderConfig, FireUploaderProgress } from './fire-uploader.model';
 import { DEFAULT_STATE } from './fire-uploader.default';
@@ -15,12 +15,12 @@ export class FireUploaderRef {
   private readonly _fileInput: HTMLInputElement;
 
   /** Reference to file input Subscription, used to unsubscribe onDestroy */
-  private readonly _inputSelect$: Subscription;
+  private readonly _inputSelect$: SubscriptionLike = Subscription.EMPTY;
 
   /** Internal stream that emits to cancel any ongoing task */
   private readonly _cancelUpload$ = new Subject();
 
-  /** Internal stream that emits to combine all file items states into FireUploaderRef state */
+  /** Internal stream that emits to combine all FileItem(s) states into a single state */
   private readonly _refreshState$ = new BehaviorSubject<FireUploaderState>({});
 
   /** Uploader state */
@@ -68,18 +68,13 @@ export class FireUploaderRef {
     this._inputSelect$ = fromEvent(this._fileInput, 'change').subscribe(() => this.addFiles(this._fileInput.files));
 
     this._refreshState$.pipe(
-      switchMap(() => {
-        if (this._state.files.length) {
-          return combineStates(this._state.files);
-        }
-        return of(DEFAULT_STATE);
-      }),
+      switchMap(() => this._state.files.length ? combineStates(this._state.files) : of(DEFAULT_STATE)),
       map((state: FireUploaderState) => {
         this.setState(state);
         this.progress$.next(state.progress);
         return state.active;
       }),
-      // Emit active state only it is changed
+      // Emit active state only if it has changed
       distinctUntilChanged(),
       tap((active: boolean) => this.active$.next(active))
     ).subscribe();
@@ -92,19 +87,19 @@ export class FireUploaderRef {
 
   /** Destroy uploader ref */
   destroy() {
-    this._inputSelect$.unsubscribe();
-    this._cancelUpload$.complete();
-    this._refreshState$.complete();
     this.state$.complete();
     this.files$.complete();
-    this.active$.complete();
-    this.progress$.complete();
-    this.cancel$.complete();
-    this.remove$.complete();
-    this.success$.complete();
     this.value$.complete();
     this.error$.complete();
     this.reset$.complete();
+    this.active$.complete();
+    this.cancel$.complete();
+    this.remove$.complete();
+    this.success$.complete();
+    this.progress$.complete();
+    this._cancelUpload$.complete();
+    this._refreshState$.complete();
+    this._inputSelect$.unsubscribe();
   }
 
   /**
@@ -313,6 +308,9 @@ export class FireUploaderRef {
     return forkJoin(chunk);
   }
 
+  /**
+   * Handles errors
+   */
   private handleError(err: Error) {
     this.error$.next(err);
     return EMPTY;
