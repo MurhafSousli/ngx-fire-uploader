@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { NotificationsService } from 'angular2-notifications';
-// import { FileItem, UploaderProgress } from '@ngx-fire-uploader/core';
-import { FileItem, FireUploaderProgress, ResizeMethod } from '../fire-uploader/core';
+import { FileItem, ResizeMethod, FireUploaderProgress } from '@ngx-fire-uploader/core';
 
 @Component({
   selector: 'app-basic-example',

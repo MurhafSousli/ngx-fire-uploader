@@ -1,36 +1,40 @@
 <div class="profile-pic-container">
 
-  <fire-photo #coverUploader id="coverPic" [disabled]="disabled" [resizeWidth]="500"
+  <fire-photo id="coverPic"
+              [resizeWidth]="500"
               [uniqueName]="false"
               [paramDir]="'xx'"
               [paramName]="'zz.jpg'"
-              (progress)="onCoverProgress($event)" (complete)="onComplete($event)">
+              [disabled]="coverPhotoDisabled"
+              [(value)]="coverPhoto"
+              (complete)="coverPhotoDisabled = true">
     Upload Cover Photo
   </fire-photo>
 
   <div class="container">
-    <fire-photo #profileUploader id="profilePic" [src]="defaultProfilePhoto" [disabled]="disabled" [thumbHeight]="200" [thumbWidth]="200">
+    <fire-photo id="profilePic"
+                [value]="profilePhoto"
+                [disabled]="profilePhotoDisabled"
+                [thumbHeight]="200"
+                [thumbWidth]="200"
+                (complete)="profilePhotoDisabled = true">
       Upload Profile Photo
     </fire-photo>
 
     <div class="my-3 float-right">
-      <button *ngIf="!disabled" class="btn" (click)="cancel(coverUploader, profileUploader)">
+      <button *ngIf="!(profilePhotoDisabled && coverPhotoDisabled)" class="btn" (click)="cancel()">
         Cancel
       </button>
 
-      <button *ngIf="!disabled" class="btn btn-orange" (click)="saveChanges(coverUploader, profileUploader)">
+      <button *ngIf="!(profilePhotoDisabled && coverPhotoDisabled)" class="btn btn-orange" (click)="upload()">
         Save Changes
       </button>
 
-      <button *ngIf="disabled" class="btn btn-orange" (click)="disabled = false">
+      <button *ngIf="profilePhotoDisabled && coverPhotoDisabled" class="btn btn-orange" (click)="edit()">
         Edit Profile
       </button>
     </div>
 
   </div>
-
-  <!-- <ng-template #coverLoading>
-    {{ (coverUploader.progress | async)?.percentage }}%
-  </ng-template> -->
 
 </div>

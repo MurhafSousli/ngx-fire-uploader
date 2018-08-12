@@ -1,8 +1,5 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { FireUploaderProgress } from '../fire-uploader/core';
-import { FirePhotoComponent } from '../fire-uploader/photo';
-// import { UploaderProgress } from '@ngx-fire-uploader/core';
-// import { FirePhotoComponent } from '@ngx-fire-uploader/photo';
+import { ChangeDetectionStrategy, Component, QueryList, ViewChildren } from '@angular/core';
+import { FirePhotoComponent } from '@ngx-fire-uploader/photo';
 
 const DEFAULT_PROFILE =
   'https://media.wired.com/photos/59268c5dcfe0d93c474309a2/master/w_1300,c_limit/BSP_054.jpg';
@@ -14,27 +11,27 @@ const DEFAULT_PROFILE =
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProfilePicExampleComponent {
-  coverProgress: number;
-  disabled = true;
-  defaultProfilePhoto = DEFAULT_PROFILE;
+  coverPhotoDisabled = false;
+  profilePhotoDisabled = false;
+  profilePhoto = DEFAULT_PROFILE;
+  coverPhoto = DEFAULT_PROFILE;
 
-  onCoverProgress(e: FireUploaderProgress) {
-    this.coverProgress = e.percentage;
+  @ViewChildren(FirePhotoComponent) uploaders: QueryList<FirePhotoComponent>;
+
+  upload() {
+    this.uploaders.map((uploader: FirePhotoComponent) => uploader.start());
+    this.coverPhotoDisabled = true;
+    this.profilePhotoDisabled = true;
   }
 
-  saveChanges(coverUploader: FirePhotoComponent, profileUploader: FirePhotoComponent) {
-    coverUploader.start();
-    profileUploader.start();
-    this.disabled = true;
+  edit() {
+    this.coverPhotoDisabled = false;
+    this.profilePhotoDisabled = false;
   }
 
-  cancel(coverUploader: FirePhotoComponent, profileUploader: FirePhotoComponent) {
-    coverUploader.reset();
-    profileUploader.reset();
-    this.disabled = true;
-  }
-
-  onComplete(e) {
-    console.log(e);
+  cancel() {
+    this.uploaders.map((uploader: FirePhotoComponent) => uploader.reset());
+    this.coverPhotoDisabled = true;
+    this.profilePhotoDisabled = true;
   }
 }
