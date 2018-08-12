@@ -11,8 +11,7 @@ import { AngularFireModule } from 'angularfire2';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { AngularFireStorageModule } from 'angularfire2/storage';
 
-// import { FireUploaderModule } from '@ngx-fire-uploader/core';
-import { FireUploaderModule } from './fire-uploader/core/fire-uploader.module';
+import { FireUploaderModule } from '@ngx-fire-uploader/core';
 
 import { AppComponent } from './app.component';
 import { environment } from '../environments/environment';
@@ -24,11 +23,11 @@ import { routes } from './routes';
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     RouterModule.forRoot(routes, {useHash: true}),
     NgbDropdownModule.forRoot(),
     NgbCollapseModule.forRoot(),
     NgbProgressbarModule.forRoot(),
-    BrowserAnimationsModule,
     SimpleNotificationsModule.forRoot(),
     FireUploaderModule.forRoot(),
     AngularFireModule.initializeApp(environment.firebase),

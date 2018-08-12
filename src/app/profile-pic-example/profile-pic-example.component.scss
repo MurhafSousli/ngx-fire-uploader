@@ -1,34 +1,17 @@
-.profile-pic {
-  position: relative;
-  background-size: cover;
-  height: 100%;
-  width: 100%;
-  border-radius: 50%;
-  overflow: hidden;
-}
-#coverPic {
-  margin-top: -3em;
-  width: 100%;
-  height: 300px;
-  background-color: #909FA8;
-}
-
 .btn-orange {
   color: white;
   background-color: #F26624;
   margin-left: 5px;
   &:focus {
-    box-shadow: 0 0 0 0.2rem rgba(#F26624,.25);
+    box-shadow: 0 0 0 0.2rem rgba(#F26624, .25);
   }
 }
 
 ::ng-deep {
-
   #profilePic {
     z-index: 100;
     margin-top: -6.5em;
     position: absolute;
-    border-radius: 2px;
     border: 6px solid white;
     box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
     height: 200px;
@@ -37,5 +20,12 @@
     .fire-border {
       border-radius: 50%;
     }
+  }
+
+  #coverPic {
+    margin-top: -3em;
+    width: 100%;
+    height: 300px;
+    background-color: #909FA8;
   }
 }

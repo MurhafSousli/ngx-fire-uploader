@@ -2,10 +2,10 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
-// import { FirePhotoModule } from '@ngx-fire-uploader/photo';
-import { FirePhotoModule } from '../fire-uploader/photo';
+import { FirePhotoModule } from '@ngx-fire-uploader/photo';
 
 import { ProfilePicExampleComponent } from './profile-pic-example.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -14,6 +14,7 @@ import { ProfilePicExampleComponent } from './profile-pic-example.component';
   ],
   imports: [
     CommonModule,
+    FormsModule,
     FirePhotoModule.forRoot(),
     RouterModule.forChild([
       {
@@ -24,5 +25,4 @@ import { ProfilePicExampleComponent } from './profile-pic-example.component';
   ]
 })
 export class ProfilePicModule {
-
 }

@@ -7,8 +7,7 @@ import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap/collapse/collapse.
 import { NgbProgressbarModule } from '@ng-bootstrap/ng-bootstrap/progressbar/progressbar.module';
 import { SimpleNotificationsModule } from 'angular2-notifications';
 
-// import { FireManagerModule } from '@ngx-fire-uploader/manager';
-import { FireManagerModule } from '../fire-uploader/manager/fire-manager.module';
+import { FireManagerModule } from '@ngx-fire-uploader/manager';
 
 import { BasicExampleComponent } from './basic-example.component';
 
