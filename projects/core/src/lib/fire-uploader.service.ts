@@ -1,5 +1,5 @@
 import { Inject, Injectable, Optional } from '@angular/core';
-import { AngularFireStorage } from 'angularfire2/storage';
+import { AngularFireStorage } from '@angular/fire/storage';
 import { FireUploaderConfig } from './fire-uploader.model';
 import { UPLOADER_CONFIG } from './fire-uploader.token';
 import { DEFAULT_CONFIG } from './fire-uploader.default';

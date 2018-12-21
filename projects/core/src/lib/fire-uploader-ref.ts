@@ -1,4 +1,4 @@
-import { AngularFireStorage } from 'angularfire2/storage';
+import { AngularFireStorage } from '@angular/fire/storage';
 import { Observable, Subject, BehaviorSubject, Subscription, of, forkJoin, fromEvent, EMPTY, SubscriptionLike } from 'rxjs';
 import { switchMap, concatMap, takeUntil, finalize, tap, catchError, distinctUntilChanged, map } from 'rxjs/operators';
 import { FireUploaderState, FireUploaderConfig, FireUploaderProgress } from './fire-uploader.model';
@@ -63,7 +63,7 @@ export class FireUploaderRef {
   constructor(public config: FireUploaderConfig, private _storage: AngularFireStorage) {
 
     // Prepare the file input
-    this._fileInput = document.createElement('input');
+    this._fileInput = <HTMLInputElement> document.createElement('input');
     this._fileInput.type = 'file';
     this._inputSelect$ = fromEvent(this._fileInput, 'change').subscribe(() => this.addFiles(this._fileInput.files));
 
@@ -252,7 +252,7 @@ export class FireUploaderRef {
 
         for (let i = 0; i < length; i++) {
           // Check if file type is accepted
-          if (this.config.accept && !fileList[i].type.match(this.config.accept)) {
+          if (this.config.accept && (!fileList[i] || !fileList[i].type.match(this.config.accept))) {
             continue;
           }
 
