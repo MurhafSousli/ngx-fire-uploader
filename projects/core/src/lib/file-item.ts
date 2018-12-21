@@ -1,5 +1,5 @@
-import { AngularFireStorage, AngularFireStorageReference, AngularFireUploadTask } from 'angularfire2/storage';
-import { UploadTaskSnapshot } from 'angularfire2/storage/interfaces';
+import { AngularFireStorage, AngularFireStorageReference, AngularFireUploadTask } from '@angular/fire/storage';
+import { UploadTaskSnapshot } from '@angular/fire/storage/interfaces';
 import { BehaviorSubject, Observable, from, of } from 'rxjs';
 import { filter, switchMap, take, tap } from 'rxjs/operators';
 import { FileState, FireUploaderConfig } from './fire-uploader.model';

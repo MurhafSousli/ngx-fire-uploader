@@ -1,4 +1,4 @@
-import { AngularFireStorage } from 'angularfire2/storage';
+import { AngularFireStorage } from '@angular/fire/storage';
 import { Observable, Subject, BehaviorSubject, Subscription, of, forkJoin, fromEvent, EMPTY, SubscriptionLike } from 'rxjs';
 import { switchMap, concatMap, takeUntil, finalize, tap, catchError, distinctUntilChanged, map } from 'rxjs/operators';
 import { FireUploaderState, FireUploaderConfig, FireUploaderProgress } from './fire-uploader.model';

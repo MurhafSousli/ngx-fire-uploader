@@ -6,7 +6,7 @@
     "languageLevel": ["dom", "es2017"],
     "externals": {
       "firebase": "firebase",
-      "angularfire2": "angularfire2"
+      "@angular/fire": "@angular/fire"
     }
   }
 }

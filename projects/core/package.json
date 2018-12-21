@@ -30,7 +30,7 @@
   "peerDependencies": {
     "@angular/common": "^6.0.0",
     "@angular/core": "^6.0.0",
-    "firebase": "^5.0.4",
-    "angularfire2": "^5.0.0-rc.10"
+    "firebase": "^5.7.1",
+    "@angular/fire": "^5.1.1"
   }
 }

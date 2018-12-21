@@ -7,9 +7,9 @@ import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap/dropdown/dropdown.
 import { NgbProgressbarModule } from '@ng-bootstrap/ng-bootstrap/progressbar/progressbar.module';
 import { SimpleNotificationsModule } from 'angular2-notifications';
 
-import { AngularFireModule } from 'angularfire2';
-import { AngularFirestoreModule } from 'angularfire2/firestore';
-import { AngularFireStorageModule } from 'angularfire2/storage';
+import { AngularFireModule } from '@angular/fire';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { AngularFireStorageModule } from '@angular/fire/storage';
 
 import { FireUploaderModule } from '@ngx-fire-uploader/core';
 

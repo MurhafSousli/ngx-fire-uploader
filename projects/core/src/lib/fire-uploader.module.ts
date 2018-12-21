@@ -1,5 +1,5 @@
 import { ModuleWithProviders, NgModule } from '@angular/core';
-import { AngularFireStorageModule, AngularFireStorage } from 'angularfire2/storage';
+import { AngularFireStorage, AngularFireStorageModule } from '@angular/fire/storage';
 
 import { FireUploader } from './fire-uploader.service';
 import { FireUploaderConfig } from './fire-uploader.model';
