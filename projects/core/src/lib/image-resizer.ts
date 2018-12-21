@@ -82,7 +82,7 @@ function resize(image: HTMLImageElement, method: ResizeMethod, maxSize: ImageSiz
  * Convert image to canvas
  */
 function imageToCanvas(image: HTMLImageElement, width: number, height: number): HTMLCanvasElement {
-  const canvas = document.createElement('canvas');
+  const canvas = <HTMLCanvasElement> document.createElement('canvas');
   canvas.width = width;
   canvas.height = height;
   const context = canvas.getContext('2d');
@@ -104,6 +104,6 @@ function canvasToFile(canvas: HTMLCanvasElement, name: string, type: string, qua
       }, type, quality);
     });
   } else {
-    return of(blobToFile(canvas.msToBlob(), type, name));
+    return of(blobToFile((<any>canvas).msToBlob(), type, name));
   }
 }

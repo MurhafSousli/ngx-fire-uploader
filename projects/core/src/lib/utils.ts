@@ -67,5 +67,5 @@ export const maxFileSizeError = (fileName: string) => {
 
 /** Check if a file type is image */
 export const isImage = (file: File) => {
-  return file.type.split('/')[0] === 'image';
+  return file && file.type.split('/')[0] === 'image';
 };

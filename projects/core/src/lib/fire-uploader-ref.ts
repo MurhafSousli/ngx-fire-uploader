@@ -63,7 +63,7 @@ export class FireUploaderRef {
   constructor(public config: FireUploaderConfig, private _storage: AngularFireStorage) {
 
     // Prepare the file input
-    this._fileInput = document.createElement('input');
+    this._fileInput = <HTMLInputElement> document.createElement('input');
     this._fileInput.type = 'file';
     this._inputSelect$ = fromEvent(this._fileInput, 'change').subscribe(() => this.addFiles(this._fileInput.files));
 
@@ -252,7 +252,7 @@ export class FireUploaderRef {
 
         for (let i = 0; i < length; i++) {
           // Check if file type is accepted
-          if (this.config.accept && !fileList[i].type.match(this.config.accept)) {
+          if (this.config.accept && (!fileList[i] || !fileList[i].type.match(this.config.accept))) {
             continue;
           }
 
