@@ -1,7 +1,7 @@
 {
   "name": "@ngx-fire-uploader/core",
   "description": "Angular file uploader for Firebase",
-  "version": "0.9.8",
+  "version": "0.9.9",
   "homepage": "http://github.com/murhafsousli/ngx-fire-uploader",
   "author": {
     "name": "Murhaf Sousli",
