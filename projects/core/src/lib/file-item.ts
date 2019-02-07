@@ -149,7 +149,7 @@ export class FileItem {
 
   /** Generate image thumbnail */
   private generateThumb(): Observable<any> {
-    if (this.config.thumbs) {
+    if (this.config.thumbs && isImage(this.file)) {
       // Update file item state with thumbnail
       return resizeImage(this.file, this.config.thumbWidth, this.config.thumbHeight, this.config.thumbMethod, 1).pipe(
         tap((blob: Blob) => this.updateState({thumbnail: window.URL.createObjectURL(blob)}))
